@@ -3,8 +3,8 @@ extends GraphNode
 signal change_name(id, node_name)
 signal change_value(id, value)
 
-@onready var textEditName = $VBoxContainer/TextEditName
-@onready var textEditValue = $VBoxContainer/TextEditValue
+@onready var lineEditName = $VBoxContainer/LineEditName
+@onready var lineEditValue = $VBoxContainer/LineEditValue
 
 var node_type: 
 	get:
@@ -13,13 +13,20 @@ var node_type:
 		pass
 
 func set_value(value):
-	textEditValue.text = str(value)
+	lineEditValue.text = str(value)
 
-func _on_text_edit_name_text_changed():
-	emit_signal("change_name", self.name, textEditName.text)
+func _on_resize_request(new_minsize):
+	self.size = new_minsize
 
-func _on_text_edit_value_text_changed():
-	emit_signal("change_value", self.name, int(textEditValue.text))
+func _on_line_edit_name_text_changed(new_text):
+	emit_signal("change_name", self.name, lineEditName.text)
 
+func _on_line_edit_value_text_changed(new_text):
+	var numValue = null
+	if new_text.contains("."):
+		numValue = float(new_text)
+	else:
+		numValue = int(new_text)
+	emit_signal("change_value", self.name, numValue)
 
 

@@ -24,7 +24,7 @@ layout_mode = 2
 
 [node name="ButtonValueNode" type="Button" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
-text = "Value Node"
+text = "Value"
 
 [node name="ButtonAddOpNode" type="Button" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
