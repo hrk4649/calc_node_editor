@@ -7,6 +7,8 @@ const VALUE = Constraints.VALUE
 const OPERATOR = Constraints.OPERATOR
 const ADD = Constraints.ADD
 const SUB = Constraints.SUB
+const MUL = Constraints.MUL
+const DIV = Constraints.DIV
 
 @onready var graphEdit = $HBoxContainer/GraphEdit
 
@@ -36,7 +38,7 @@ func remove_node(to_remove):
 			continue
 		# care node.input's size
 		match node.type:
-			ADD,SUB:
+			ADD,SUB,MUL,DIV:
 				for idx in range(0,2):
 					if node.input[idx] == to_remove.id:
 						node.input[idx] = null
@@ -82,6 +84,16 @@ func process_node(node):
 			process_node_2op(node, proc)
 		SUB:
 			var proc = func sub(a,b):return a - b
+			process_node_2op(node, proc)
+		MUL:
+			var proc = func mul(a,b):return a * b
+			process_node_2op(node, proc)
+		DIV:
+			var proc = func div(a,b):
+				if b == 0:
+					return null
+				else:
+					return a / b
 			process_node_2op(node, proc)
 		_:
 			print("unsupported type:%s" % node.type)
@@ -213,6 +225,37 @@ func _on_button_sub_op_node_pressed():
 	}
 	nodes.append(node)
 
+
+func _on_button_mul_op_node_pressed():
+	var opNode = OpNode.instantiate()
+	opNode.name = generate_id()
+	opNode.node_type = MUL
+	opNode.title = "A x B"
+	graphEdit.add_child(opNode)
+	var node = {
+		"id": opNode.name,
+		"type": MUL,
+		"value": null,
+		"input": [null, null],
+		"output": []
+	}
+	nodes.append(node)
+
+func _on_button_div_op_node_pressed():
+	var opNode = OpNode.instantiate()
+	opNode.name = generate_id()
+	opNode.node_type = DIV
+	opNode.title = "A / B"
+	graphEdit.add_child(opNode)
+	var node = {
+		"id": opNode.name,
+		"type": DIV,
+		"value": null,
+		"input": [null, null],
+		"output": []
+	}
+	nodes.append(node)
+
 func _on_button_delete_pressed():
 	for node in graphEdit.get_children():
 		var className = node.get_class()
@@ -234,7 +277,7 @@ func _on_graph_edit_connection_request(from_node, from_port, to_node, to_port):
 		return
 		
 	# check number of input
-	if to.type in [ADD, SUB]:
+	if to.type in [ADD, SUB, MUL, DIV]:
 		if to.input[to_port] != null:
 			# cancel
 			return
@@ -244,7 +287,7 @@ func _on_graph_edit_connection_request(from_node, from_port, to_node, to_port):
 		from.output.append(to.id)
 	# add from.id into to.input
 	match to.type:
-		ADD,SUB:
+		ADD,SUB,MUL,DIV:
 			to.input[to_port] = from.id
 		_:
 			if to.input.find(from.id) < 0:
@@ -267,7 +310,7 @@ func _on_graph_edit_disconnection_request(from_node, from_port, to_node, to_port
 	from.output.erase(to.id)
 
 	match to.type:
-		ADD,SUB:
+		ADD,SUB,MUL,DIV:
 			# set null
 			to.input[to_port] = null
 		_:
