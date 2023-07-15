@@ -31,24 +31,10 @@ slot/1/right_icon = null
 slot/1/draw_stylebox = true
 script = ExtResource("1_5j3c0")
 
-[node name="HBoxContainerA" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HBoxContainerA"]
+[node name="LabelA" type="Label" parent="."]
 layout_mode = 2
 text = "A"
 
-[node name="TextEdit" type="TextEdit" parent="HBoxContainerA"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="HBoxContainerB" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HBoxContainerB"]
+[node name="LabelB" type="Label" parent="."]
 layout_mode = 2
 text = "B"
-
-[node name="TextEdit" type="TextEdit" parent="HBoxContainerB"]
-layout_mode = 2
-size_flags_horizontal = 3

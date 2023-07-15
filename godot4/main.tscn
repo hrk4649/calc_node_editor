@@ -30,6 +30,10 @@ text = "Value Node"
 layout_mode = 2
 text = "Operator Node"
 
+[node name="ButtonAddOpNode" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "+"
+
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
@@ -51,6 +55,7 @@ right_disconnects = true
 
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonValueNode" to="." method="_on_button_value_node_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonOpNode" to="." method="_on_button_op_node_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonAddOpNode" to="." method="_on_button_add_op_node_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonDelete" to="." method="_on_button_delete_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonList" to="." method="_on_button_list_pressed"]
 [connection signal="connection_request" from="HBoxContainer/GraphEdit" to="." method="_on_graph_edit_connection_request"]

@@ -2,9 +2,11 @@ extends Control
 
 var ValueNode = preload("res://value_node.tscn")
 var OpNode = preload("res://op_node.tscn")
+var AddOpNode = preload("res://add_op_node.tscn")
 
-const VALUE = "value"
-const OPERATOR = "operator"
+const VALUE = Constraints.VALUE
+const OPERATOR = Constraints.OPERATOR
+const ADD = Constraints.ADD
 
 @onready var graphEdit = $HBoxContainer/GraphEdit
 
@@ -38,7 +40,7 @@ func remove_node(to_remove):
 	nodes.erase(to_remove)
 
 func get_input_values(node):
-	var input_nodes = node.input.map(func(id):return find_node(id))
+	var input_nodes = node.input.map(func(id):return find_node(id)).filter(func(node): return node != null)
 	var input_values = input_nodes.map(func(node):if node.has(VALUE):return node.value else: return null)
 	var result = input_values.filter(func(v):return v != null)
 	return result
@@ -73,20 +75,27 @@ func process_node(node):
 				for output_node in output_nodes:
 					output_node.value = node.value
 		OPERATOR:
-			# set node.value
-			if node.input.size() == 0:
-				# do nothing
-				pass
-			elif is_input_available(node):
-				var input_values = get_input_values(node)
-				# now operator is summation
-				var sum = input_values.reduce(func(accum, elem):return accum + elem,0)
-				node.value = sum
-			# set node.value into one.value in output
-			if node.value != null && node.output.size() > 0:
-				var output_nodes = node.output.map(func(id):return find_node(id))
-				for output_node in output_nodes:
-					output_node.value = node.value
+			process_node_sum(node)
+		ADD:
+			process_node_sum(node)
+		_:
+			print("unsupported type:%s" % node.type)
+
+func process_node_sum(node):
+	# set node.value
+	if node.input.size() == 0:
+		# do nothing
+		pass
+	elif is_input_available(node):
+		var input_values = get_input_values(node)
+		# now operator is summation
+		var sum = input_values.reduce(func(accum, elem):return accum + elem,0)
+		node.value = sum
+	# set node.value into one.value in output
+	if node.value != null && node.output.size() > 0:
+		var output_nodes = node.output.map(func(id):return find_node(id))
+		for output_node in output_nodes:
+			output_node.value = node.value	
 
 func calculate_nodes():
 	# reset value
@@ -163,6 +172,19 @@ func _on_button_op_node_pressed():
 	}
 	nodes.append(node)
 
+func _on_button_add_op_node_pressed():
+	var addOpNode = AddOpNode.instantiate()
+	addOpNode.name = generate_id()
+	graphEdit.add_child(addOpNode)
+	var node = {
+		"id": addOpNode.name,
+		"type": ADD,
+		"value": null,
+		"input": [null, null],
+		"output": []
+	}
+	nodes.append(node)
+
 func _on_button_delete_pressed():
 	for node in graphEdit.get_children():
 		var className = node.get_class()
@@ -182,12 +204,23 @@ func _on_graph_edit_connection_request(from_node, from_port, to_node, to_port):
 	if to == null:
 		print("to_node %s is not found" % to_node)
 		return
+		
+	# check number of input
+	if to.type in [ADD]:
+		if to.input[to_port] != null:
+			# cancel
+			return
+		
 	# add to.id into from.output
 	if from.output.find(to.id) < 0:
 		from.output.append(to.id)
 	# add from.id into to.input
-	if to.input.find(from.id) < 0:
-		to.input.append(from.id)
+	match to.type:
+		ADD:
+			to.input[to_port] = from.id
+		_:
+			if to.input.find(from.id) < 0:
+				to.input.append(from.id)
 	
 	graphEdit.connect_node(from_node, from_port, to_node, to_port)
 	calculate_nodes()
@@ -204,8 +237,14 @@ func _on_graph_edit_disconnection_request(from_node, from_port, to_node, to_port
 		return
 	# remove to.id from.output
 	from.output.erase(to.id)
-	# remove from.id from to.input
-	to.input.erase(from.id)
+
+	match to.type:
+		ADD:
+			# set null
+			to.input[to_port] = null
+		_:
+			# remove from.id from to.input
+			to.input.erase(from.id)
 
 	graphEdit.disconnect_node(from_node, from_port, to_node, to_port)
 	calculate_nodes()
@@ -219,3 +258,6 @@ func _on_button_list_pressed():
 		print("node:%s" % node)
 	for dict in graphEdit.get_connection_list():
 		print("connection:%s" % [dict])
+
+
+

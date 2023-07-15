@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://b72nc0kckgj6d"]
+
+[ext_resource type="PackedScene" uid="uid://mheui57kd4kt" path="res://op_node.tscn" id="1_v56fe"]
+[ext_resource type="Script" path="res://add_op_node.gd" id="2_2dni2"]
+
+[node name="AddOpNode" instance=ExtResource("1_v56fe")]
+script = ExtResource("2_2dni2")
