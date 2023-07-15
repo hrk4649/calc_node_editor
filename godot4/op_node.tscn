@@ -1,0 +1,54 @@
+[gd_scene load_steps=2 format=3 uid="uid://mheui57kd4kt"]
+
+[ext_resource type="Script" path="res://op_node.gd" id="1_5j3c0"]
+
+[node name="OpNode" type="GraphNode"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1040.0
+offset_bottom = -534.0
+grow_horizontal = 2
+grow_vertical = 2
+title = "A ? B"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = true
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+script = ExtResource("1_5j3c0")
+
+[node name="HBoxContainerA" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainerA"]
+layout_mode = 2
+text = "A"
+
+[node name="TextEdit" type="TextEdit" parent="HBoxContainerA"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainerB" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainerB"]
+layout_mode = 2
+text = "B"
+
+[node name="TextEdit" type="TextEdit" parent="HBoxContainerB"]
+layout_mode = 2
+size_flags_horizontal = 3
