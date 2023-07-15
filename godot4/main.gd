@@ -10,6 +10,7 @@ const SUB = Constraints.SUB
 const MUL = Constraints.MUL
 const DIV = Constraints.DIV
 const SUM = Constraints.SUM
+const PROD = Constraints.PROD
 
 @onready var graphEdit = $HBoxContainer/GraphEdit
 
@@ -96,18 +97,21 @@ func process_node(node):
 			process_node_2op(node, proc)
 		SUM:
 			var proc = func(accum, elem): return accum + elem
-			process_node_n_ary(node, proc)
+			process_node_n_ary(node, proc, 0)
+		PROD:
+			var proc = func(accum, elem): return accum * elem
+			process_node_n_ary(node, proc, 1)
 		_:
 			print("unsupported type:%s" % node.type)
 
-func process_node_n_ary(node, proc):
+func process_node_n_ary(node, proc, initValue):
 	# set node.value
 	if node.input.size() == 0:
 		# do nothing
 		pass
 	elif is_input_available(node):
 		var input_values = get_input_values(node)
-		var result = input_values.reduce(proc,0)
+		var result = input_values.reduce(proc, initValue)
 		node.value = result
 
 func process_node_2op(node, lambda):
@@ -254,6 +258,21 @@ func _on_button_sum_op_node_pressed():
 	}
 	nodes.append(node)
 
+func _on_button_prod_op_node_pressed():
+	var opNode = NArrOpNode.instantiate()
+	opNode.name = generate_id()
+	opNode.node_type = PROD
+	opNode.title = "Π"
+	graphEdit.add_child(opNode)
+	var node = {
+		"id": opNode.name,
+		"type": PROD,
+		"value": null,
+		"input": [],
+		"output": []
+	}
+	nodes.append(node)
+
 func _on_button_delete_pressed():
 	for node in graphEdit.get_children():
 		var className = node.get_class()
@@ -327,4 +346,7 @@ func _on_button_list_pressed():
 		print("node:%s" % node)
 #	for dict in graphEdit.get_connection_list():
 #		print("connection:%s" % [dict])
+
+
+
 

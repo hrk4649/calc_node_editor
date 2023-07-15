@@ -46,6 +46,10 @@ text = "A / B"
 layout_mode = 2
 text = "Σ"
 
+[node name="ButtonProdOpNode" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Π"
+
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
@@ -71,6 +75,7 @@ right_disconnects = true
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonMulOpNode" to="." method="_on_button_mul_op_node_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonDivOpNode" to="." method="_on_button_div_op_node_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonSumOpNode" to="." method="_on_button_sum_op_node_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonProdOpNode" to="." method="_on_button_prod_op_node_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonDelete" to="." method="_on_button_delete_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonList" to="." method="_on_button_list_pressed"]
 [connection signal="connection_request" from="HBoxContainer/GraphEdit" to="." method="_on_graph_edit_connection_request"]
