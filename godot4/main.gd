@@ -2,8 +2,6 @@ extends Control
 
 var ValueNode = preload("res://value_node.tscn")
 var OpNode = preload("res://op_node.tscn")
-var AddOpNode = preload("res://add_op_node.tscn")
-var SubOpNode = preload("res://sub_op_node.tscn")
 
 const VALUE = Constraints.VALUE
 const OPERATOR = Constraints.OPERATOR
@@ -18,7 +16,6 @@ func _ready():
 	pass
 
 func generate_id():
-	#return int(Time.get_unix_time_from_system() * 1000)
 	return Uuid.v4()
 
 func find_node(id):
@@ -78,11 +75,6 @@ func process_node(node):
 				var input_values = get_input_values(node)
 				if input_values.size() == 1:
 					node.value = input_values[0]
-			# set node.value into one.value in output
-			if node.value != null && node.output.size() > 0:
-				var output_nodes = node.output.map(func(id):return find_node(id))
-				for output_node in output_nodes:
-					output_node.value = node.value
 		OPERATOR:
 			process_node_sum(node)
 		ADD:
@@ -118,11 +110,6 @@ func process_node_2op(node, lambda):
 			var inputB = input_values[1]
 			var result = lambda.call(inputA, inputB)
 			node.value = result
-	# set node.value into one.value in output
-	if node.value != null && node.output.size() > 0:
-		var output_nodes = node.output.map(func(id):return find_node(id))
-		for output_node in output_nodes:
-			output_node.value = node.value	
 
 func calculate_nodes():
 	# reset value
@@ -145,14 +132,10 @@ func reflect_values():
 	var children = graphEdit.get_children()
 	for node in nodes:
 		if !is_constant(node):
-#			for child in children:
-#				print("reflect_values:child:%s %s" % [child, child.get_name()])
-#				if child.get_name() == node.id:
-#					child.set_value(node.value)
 			var cands = children.filter(func(child): return child.get_name() == node.id)
 			if cands.size() == 1:
 				var child = cands[0]
-				if child.get_type() == VALUE:
+				if child.node_type == VALUE:
 					child.set_value(node.value)
 
 func _on_change_name(id, node_name):
@@ -200,11 +183,13 @@ func _on_button_op_node_pressed():
 	nodes.append(node)
 
 func _on_button_add_op_node_pressed():
-	var addOpNode = AddOpNode.instantiate()
-	addOpNode.name = generate_id()
-	graphEdit.add_child(addOpNode)
+	var opNode = OpNode.instantiate()
+	opNode.name = generate_id()
+	opNode.node_type = ADD
+	opNode.title = "A + B"
+	graphEdit.add_child(opNode)
 	var node = {
-		"id": addOpNode.name,
+		"id": opNode.name,
 		"type": ADD,
 		"value": null,
 		"input": [null, null],
@@ -212,9 +197,12 @@ func _on_button_add_op_node_pressed():
 	}
 	nodes.append(node)
 
+
 func _on_button_sub_op_node_pressed():
-	var opNode = SubOpNode.instantiate()
+	var opNode = OpNode.instantiate()
 	opNode.name = generate_id()
+	opNode.node_type = SUB
+	opNode.title = "A - B"
 	graphEdit.add_child(opNode)
 	var node = {
 		"id": opNode.name,
@@ -224,7 +212,6 @@ func _on_button_sub_op_node_pressed():
 		"output": []
 	}
 	nodes.append(node)
-
 
 func _on_button_delete_pressed():
 	for node in graphEdit.get_children():
@@ -293,10 +280,10 @@ func _on_graph_edit_disconnection_request(from_node, from_port, to_node, to_port
 
 func _on_button_list_pressed():
 	print("_on_button_list_pressed()")
-	for child in graphEdit.get_children():
-		print("GraphNode:%s %s" % [child, child.get_name()])
+#	for child in graphEdit.get_children():
+#		print("GraphNode:%s %s" % [child, child.get_name()])
 	for node in nodes:
 		print("node:%s" % node)
-	for dict in graphEdit.get_connection_list():
-		print("connection:%s" % [dict])
+#	for dict in graphEdit.get_connection_list():
+#		print("connection:%s" % [dict])
 

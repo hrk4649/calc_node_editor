@@ -1,5 +1,9 @@
 extends GraphNode
 
-func get_type():
-	return Constraints.OPERATOR
+var node_type: 
+	get:
+		return node_type
+	set(value):
+		node_type = value
+
 
