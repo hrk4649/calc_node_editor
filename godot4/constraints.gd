@@ -6,3 +6,4 @@ class_name Constraints
 const VALUE = "value"
 const OPERATOR = "operator"
 const ADD = "add"
+const SUB = "sub"
