@@ -1,0 +1,57 @@
+[gd_scene load_steps=2 format=3 uid="uid://dnaxir3ffkxju"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_ycdy6"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ycdy6")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonValueNode" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Value Node"
+
+[node name="ButtonOpNode" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Operator Node"
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonDelete" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Delete"
+
+[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonList" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "GraphEditInfo"
+
+[node name="GraphEdit" type="GraphEdit" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+right_disconnects = true
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonValueNode" to="." method="_on_button_value_node_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonOpNode" to="." method="_on_button_op_node_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonDelete" to="." method="_on_button_delete_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonList" to="." method="_on_button_list_pressed"]
+[connection signal="connection_request" from="HBoxContainer/GraphEdit" to="." method="_on_graph_edit_connection_request"]
+[connection signal="disconnection_request" from="HBoxContainer/GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
