@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxcp3cdbme6hy"]
+
+[ext_resource type="Script" path="res://table_node_button.gd" id="1_4u0i1"]
+
+[node name="TableNodeButton" type="Button"]
+text = "x"
+script = ExtResource("1_4u0i1")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

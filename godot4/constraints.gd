@@ -4,16 +4,17 @@ class_name Constraints
 # types of node
 
 const VALUE = "value"
-#const OPERATOR = "operator"
-# addition
+# Operator addition
 const ADD = "add"
-# subtraction
+# Operator subtraction
 const SUB = "sub"
-# multiplication
+# Operator multiplication
 const MUL = "mul"
-# division
+# Operator division
 const DIV = "div"
-# summation
+# Operator summation
 const SUM = "sum"
-# product
+# Operator product
 const PROD = "prod"
+# Table
+const TABLE = "table"

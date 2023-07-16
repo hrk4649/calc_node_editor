@@ -1,0 +1,79 @@
+[gd_scene load_steps=2 format=3 uid="uid://3budlg8sxjfj"]
+
+[ext_resource type="Script" path="res://table_node.gd" id="1_nniyo"]
+
+[node name="TableNode" type="GraphNode"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -753.0
+offset_bottom = -391.0
+grow_horizontal = 2
+grow_vertical = 2
+resizable = true
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+script = ExtResource("1_nniyo")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="LineEditName" type="LineEdit" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Name"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonAddRow" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Add Row"
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 5
+
+[node name="LabelNo" type="Label" parent="GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "No"
+
+[node name="LabelMin" type="Label" parent="GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "min"
+
+[node name="LabelMax" type="Label" parent="GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "max"
+
+[node name="LabelValue" type="Label" parent="GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "value"
+
+[node name="LabelDelete" type="Label" parent="GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="resize_request" from="." to="." method="_on_resize_request"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ButtonAddRow" to="." method="_on_button_add_row_pressed"]

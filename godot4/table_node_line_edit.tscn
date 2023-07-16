@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bl0j0p5emsdtf"]
+
+[ext_resource type="Script" path="res://table_node_line_edit.gd" id="1_vuh7r"]
+
+[node name="TableNodeLineEdit" type="LineEdit"]
+script = ExtResource("1_vuh7r")
