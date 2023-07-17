@@ -68,10 +68,27 @@ layout_mode = 2
 layout_mode = 2
 text = "GraphEditInfo"
 
+[node name="MarginContainer3" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonSave" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Save
+"
+
+[node name="ButtonLoad" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Load
+"
+
 [node name="GraphEdit" type="GraphEdit" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 right_disconnects = true
+
+[node name="FileDialog" type="FileDialog" parent="."]
+size = Vector2i(392, 162)
+access = 2
 
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonValueNode" to="." method="_on_button_value_node_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonAddOpNode" to="." method="_on_button_add_op_node_pressed"]
@@ -83,5 +100,8 @@ right_disconnects = true
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonTableNode" to="." method="_on_button_table_node_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonDelete" to="." method="_on_button_delete_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonList" to="." method="_on_button_list_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonSave" to="." method="_on_button_save_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonLoad" to="." method="_on_button_load_pressed"]
 [connection signal="connection_request" from="HBoxContainer/GraphEdit" to="." method="_on_graph_edit_connection_request"]
 [connection signal="disconnection_request" from="HBoxContainer/GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]

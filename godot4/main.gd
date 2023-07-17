@@ -15,6 +15,7 @@ const PROD = Constraints.PROD
 const TABLE = Constraints.TABLE
 
 @onready var graphEdit = $HBoxContainer/GraphEdit
+@onready var fileDialog = $FileDialog
 
 var nodes = []
 
@@ -176,20 +177,104 @@ func reflect_values():
 				if child.node_type == VALUE:
 					child.set_value(node.value)
 
-func _on_change_name(id, node_name):
-	print("_on_change_name:%s, %s" % [id, node_name])
-	var node = find_node(id)
-	# set value if there is no input
-	node.name = node_name
+func save_file(path):
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	var content = JSON.stringify(nodes)
+	file.store_string(content)
 
-func _on_change_value(id, value):
-	print("_on_change_value:%s, %s" % [id, value])
-	var node = find_node(id)
-	# set value if there is no input
-	if node.input.size() == 0:
-		node.value = Utils.text_to_value(value)
-		calculate_nodes()
-		reflect_values()
+func load_file(path):
+	var file = FileAccess.open(path, FileAccess.READ)
+	var content = file.get_as_text()
+	nodes = JSON.parse_string(content)
+	initNodeUIs()
+
+func initNodeUIs():
+	var children = graphEdit.get_children()
+	for child in children:
+		graphEdit.remove_child(child)
+	# create nodes
+	# create edges
+
+func create_value_node():
+	return {
+		"id": generate_id(),
+		"type": VALUE,
+		"name": null,
+		"value": null,
+		"input": [],
+		"output": []
+	}
+
+func create_add_op_node():
+	return {
+		"id": generate_id(),
+		"type": ADD,
+		"value": null,
+		"input": [null, null],
+		"output": []
+	}
+	
+func create_sub_op_node():
+	return {
+		"id": generate_id(),
+		"type": SUB,
+		"value": null,
+		"input": [null, null],
+		"output": []
+	}
+
+func create_mul_op_node():
+	return {
+		"id": generate_id(),
+		"type": MUL,
+		"value": null,
+		"input": [null, null],
+		"output": []
+	}
+
+func create_div_op_node():
+	return {
+		"id": generate_id(),
+		"type": DIV,
+		"value": null,
+		"input": [null, null],
+		"output": []
+	}
+
+func create_value_node_ui(node):
+	var valueNode = ValueNode.instantiate()
+	valueNode.name = node.id
+	valueNode.connect("change_name", Callable(self, "_on_change_name"))
+	valueNode.connect("change_value", Callable(self, "_on_change_value"))
+	return valueNode
+
+func create_add_op_node_ui(node):
+	var opNode = OpNode.instantiate()
+	opNode.name = node.id
+	opNode.node_type = ADD
+	opNode.title = "A + B"
+	return opNode
+
+func create_sub_op_node_ui(node):
+	var opNode = OpNode.instantiate()
+	opNode.name = node.id
+	opNode.node_type = SUB
+	opNode.title = "A - B"
+	return opNode
+
+func create_mul_op_node_ui(node):
+	var opNode = OpNode.instantiate()
+	opNode.name = node.id
+	opNode.node_type = MUL
+	opNode.title = "A x B"
+	return opNode
+
+func create_div_op_node_ui(node):
+	var opNode = OpNode.instantiate()
+	opNode.name = node.id
+	opNode.node_type = DIV
+	opNode.title = "A / B"
+	return opNode
 
 func _on_change_table_row(id, row):
 	print("_on_change_table_row:%s, %s" % [id, row])
@@ -199,81 +284,33 @@ func _on_change_table_row(id, row):
 	reflect_values()
 
 func _on_button_value_node_pressed():
-	var valueNode = ValueNode.instantiate()
-	valueNode.name = generate_id()
-	valueNode.connect("change_name", Callable(self, "_on_change_name"))
-	valueNode.connect("change_value", Callable(self, "_on_change_value"))
-	graphEdit.add_child(valueNode)
-	var node = {
-		"id": valueNode.name,
-		"type": VALUE,
-		"name": null,
-		"value": null,
-		"input": [],
-		"output": []
-	}
+	var node = create_value_node()
+	var node_ui = create_value_node_ui(node)
+	graphEdit.add_child(node_ui)
 	nodes.append(node)
 
 func _on_button_add_op_node_pressed():
-	var opNode = OpNode.instantiate()
-	opNode.name = generate_id()
-	opNode.node_type = ADD
-	opNode.title = "A + B"
-	graphEdit.add_child(opNode)
-	var node = {
-		"id": opNode.name,
-		"type": ADD,
-		"value": null,
-		"input": [null, null],
-		"output": []
-	}
+	var node = create_add_op_node()
+	var node_ui = create_add_op_node_ui(node)
+	graphEdit.add_child(node_ui)
 	nodes.append(node)
-
 
 func _on_button_sub_op_node_pressed():
-	var opNode = OpNode.instantiate()
-	opNode.name = generate_id()
-	opNode.node_type = SUB
-	opNode.title = "A - B"
-	graphEdit.add_child(opNode)
-	var node = {
-		"id": opNode.name,
-		"type": SUB,
-		"value": null,
-		"input": [null, null],
-		"output": []
-	}
+	var node = create_sub_op_node()
+	var node_ui = create_sub_op_node_ui(node)
+	graphEdit.add_child(node_ui)
 	nodes.append(node)
 
-
 func _on_button_mul_op_node_pressed():
-	var opNode = OpNode.instantiate()
-	opNode.name = generate_id()
-	opNode.node_type = MUL
-	opNode.title = "A x B"
-	graphEdit.add_child(opNode)
-	var node = {
-		"id": opNode.name,
-		"type": MUL,
-		"value": null,
-		"input": [null, null],
-		"output": []
-	}
+	var node = create_mul_op_node()
+	var node_ui = create_mul_op_node_ui(node)
+	graphEdit.add_child(node_ui)
 	nodes.append(node)
 
 func _on_button_div_op_node_pressed():
-	var opNode = OpNode.instantiate()
-	opNode.name = generate_id()
-	opNode.node_type = DIV
-	opNode.title = "A / B"
-	graphEdit.add_child(opNode)
-	var node = {
-		"id": opNode.name,
-		"type": DIV,
-		"value": null,
-		"input": [null, null],
-		"output": []
-	}
+	var node = create_div_op_node()
+	var node_ui = create_div_op_node_ui(node)
+	graphEdit.add_child(node_ui)
 	nodes.append(node)
 
 func _on_button_sum_op_node_pressed():
@@ -323,6 +360,21 @@ func _on_button_table_node_pressed():
 		"output": []
 	}
 	nodes.append(node)
+
+func _on_change_name(id, node_name):
+	print("_on_change_name:%s, %s" % [id, node_name])
+	var node = find_node(id)
+	# set value if there is no input
+	node.name = node_name
+
+func _on_change_value(id, value):
+	print("_on_change_value:%s, %s" % [id, value])
+	var node = find_node(id)
+	# set value if there is no input
+	if node.input.size() == 0:
+		node.value = Utils.text_to_value(value)
+		calculate_nodes()
+		reflect_values()
 
 func _on_button_delete_pressed():
 	for node in graphEdit.get_children():
@@ -398,3 +450,24 @@ func _on_button_list_pressed():
 #	for dict in graphEdit.get_connection_list():
 #		print("connection:%s" % [dict])
 
+func _on_button_save_pressed():
+	pass # Replace with function body.
+	fileDialog.file_mode = FileDialog.FileMode.FILE_MODE_SAVE_FILE
+	fileDialog.size = self.size * 0.8
+	fileDialog.position = self.size * 0.5 - fileDialog.size * 0.5
+	fileDialog.show()
+
+func _on_button_load_pressed():
+	pass # Replace with function body.
+	fileDialog.file_mode = FileDialog.FileMode.FILE_MODE_OPEN_FILE
+	fileDialog.size = self.size * 0.8
+	fileDialog.position = self.size * 0.5 - fileDialog.size * 0.5
+	fileDialog.show()
+
+func _on_file_dialog_file_selected(path):
+	print("_on_file_dialog_file_selected:%s" % path)
+	match fileDialog.file_mode:
+		FileDialog.FileMode.FILE_MODE_SAVE_FILE:
+			save_file(path)
+		FileDialog.FileMode.FILE_MODE_OPEN_FILE:
+			load_file(path)
