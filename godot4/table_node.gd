@@ -9,7 +9,7 @@ var TableNodeButton = preload("res://table_node_button.tscn")
 @onready var lineEditName = $VBoxContainer/LineEditName
 @onready var buttonAddRow = $VBoxContainer/HBoxContainer/ButtonAddRow
 @onready var buttonDelRow = $VBoxContainer/HBoxContainer/ButtonDelRow
-@onready var gridContainer = $GridContainer
+@onready var gridContainer = $VBoxContainer/GridContainer
 
 var node_type: 
 	get:

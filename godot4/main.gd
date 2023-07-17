@@ -233,7 +233,8 @@ func initNodeUIs():
 		var node_uis = graphEdit.get_children().filter(func(child):return child.name == node.id)
 		if node.type in [VALUE, TABLE] && node_uis.size() == 1:
 			var node_ui = node_uis[0]
-			node_ui.set_node_name(node.name)
+			if node.has("name"):
+				node_ui.set_node_name(node.name)
 
 	# set value
 	for node in nodes:
