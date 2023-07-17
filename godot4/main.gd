@@ -3,6 +3,7 @@ extends Control
 var ValueNode = preload("res://value_node.tscn")
 var OpNode = preload("res://op_node.tscn")
 var NArrOpNode = preload("res://n_ary_op_node.tscn")
+var TableNode = preload("res://table_node.tscn")
 
 const VALUE = Constraints.VALUE
 const ADD = Constraints.ADD
@@ -11,6 +12,7 @@ const MUL = Constraints.MUL
 const DIV = Constraints.DIV
 const SUM = Constraints.SUM
 const PROD = Constraints.PROD
+const TABLE = Constraints.TABLE
 
 @onready var graphEdit = $HBoxContainer/GraphEdit
 
@@ -101,8 +103,32 @@ func process_node(node):
 		PROD:
 			var proc = func(accum, elem): return accum * elem
 			process_node_n_ary(node, proc, 1)
+		TABLE:
+			process_node_table(node)
 		_:
 			print("unsupported type:%s" % node.type)
+
+func process_node_table(node):
+	if node.input.size() != 1:
+		print("process_node_table:no input")
+		return
+	var input_values = get_input_values(node)
+	if input_values.size() != 1:
+		print("process_node_table:no input value")
+		return
+	var input_value = input_values[0]
+	
+	if !(typeof(input_value) in [TYPE_INT, TYPE_FLOAT]):
+		return
+	
+	# find row
+	for row in node.row:
+		var pass_min = row.min == null || input_value >= row.min
+		var pass_max = row.max == null || input_value < row.max
+		
+		if pass_min && pass_max:
+			node.value = row.value
+			break
 
 func process_node_n_ary(node, proc, initValue):
 	# set node.value
@@ -161,9 +187,16 @@ func _on_change_value(id, value):
 	var node = find_node(id)
 	# set value if there is no input
 	if node.input.size() == 0:
-		node.value = value
+		node.value = Utils.text_to_value(value)
 		calculate_nodes()
 		reflect_values()
+
+func _on_change_table_row(id, row):
+	print("_on_change_table_row:%s, %s" % [id, row])
+	var node = find_node(id)
+	node.row = row
+	calculate_nodes()
+	reflect_values()
 
 func _on_button_value_node_pressed():
 	var valueNode = ValueNode.instantiate()
@@ -273,6 +306,24 @@ func _on_button_prod_op_node_pressed():
 	}
 	nodes.append(node)
 
+func _on_button_table_node_pressed():
+	var uiNode = TableNode.instantiate()
+	uiNode.name = generate_id()
+	uiNode.node_type = TABLE
+	graphEdit.add_child(uiNode)
+	uiNode.connect("change_name", Callable(self, "_on_change_name"))
+	uiNode.connect("change_table_row", Callable(self, "_on_change_table_row"))
+	var node = {
+		"id": uiNode.name,
+		"type": TABLE,
+		# row is like {"no":1, "min":0, "max":100, "value":1}
+		"row": [],
+		"value": null,
+		"input": [],
+		"output": []
+	}
+	nodes.append(node)
+
 func _on_button_delete_pressed():
 	for node in graphEdit.get_children():
 		var className = node.get_class()
@@ -346,7 +397,4 @@ func _on_button_list_pressed():
 		print("node:%s" % node)
 #	for dict in graphEdit.get_connection_list():
 #		print("connection:%s" % [dict])
-
-
-
 

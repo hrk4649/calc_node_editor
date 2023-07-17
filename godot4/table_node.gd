@@ -1,8 +1,12 @@
 extends GraphNode
 
+signal change_name(id, node_name)
+signal change_table_row(id, row)
+
 var TableNodeLineEdit = preload("res://table_node_line_edit.tscn")
 var TableNodeButton = preload("res://table_node_button.tscn")
 
+@onready var lineEditName = $VBoxContainer/LineEditName
 @onready var buttonAddRow = $VBoxContainer/HBoxContainer/ButtonAddRow
 @onready var buttonDelRow = $VBoxContainer/HBoxContainer/ButtonDelRow
 @onready var gridContainer = $GridContainer
@@ -22,10 +26,17 @@ func add_row():
 	var buttonDelete = TableNodeButton.instantiate()
 	lineEditNo.text = "1"
 	lineEditNo.editable = false
+
+	lineEditMin.change_value.connect(_on_table_node_line_edit_change_value)
+	lineEditMax.change_value.connect(_on_table_node_line_edit_change_value)
+	lineEditValue.change_value.connect(_on_table_node_line_edit_change_value)
+
 	buttonDelete.table_node_button_pressed.connect(_on_button_delete_pressed)
-	var elems = [lineEditNo, lineEditMin, lineEditMax, lineEditValue, buttonDelete]
-	for elem in elems:
-		gridContainer.add_child(elem)
+	gridContainer.add_child(lineEditNo)
+	gridContainer.add_child(lineEditMin)
+	gridContainer.add_child(lineEditMax)
+	gridContainer.add_child(lineEditValue)
+	gridContainer.add_child(buttonDelete)
 
 func delete_row(row_no):
 	# pick elements to delete
@@ -55,10 +66,30 @@ func get_row_count():
 
 func reset_no_columns():
 	pass
-	for row in range (1, get_row_count()):
-		var no_idx = row * gridContainer.columns
+	for no in range (1, get_row_count()):
+		var no_idx = no * gridContainer.columns
 		var lineEditNo = gridContainer.get_child(no_idx)
-		lineEditNo.text = str(row)
+		lineEditNo.text = str(no)
+
+func refresh_row():
+	var row_ary = []
+	for no in range (1, get_row_count()):
+		var no_idx = no * gridContainer.columns
+		var lineEditNo = gridContainer.get_child(no_idx)
+		var lineEditMin = gridContainer.get_child(no_idx + 1)
+		var lineEditMax = gridContainer.get_child(no_idx + 2)
+		var lineEditValue = gridContainer.get_child(no_idx + 3)
+		var row = {
+			"no": no,
+			"min": Utils.text_to_value(lineEditMin.text),
+			"max": Utils.text_to_value(lineEditMax.text),
+			"value": Utils.text_to_value(lineEditValue.text),
+		}
+		row_ary.append(row)
+	emit_signal("change_table_row", self.name, row_ary)
+
+func _on_table_node_line_edit_change_value():
+	refresh_row()
 
 func _on_button_delete_pressed(button):
 	var row_number = get_row_number_of(button)
@@ -71,3 +102,6 @@ func _on_button_add_row_pressed():
 
 func _on_resize_request(new_minsize):
 	self.size = new_minsize
+
+func _on_line_edit_name_text_changed(new_text):
+	emit_signal("change_name", self.name, lineEditName.text)

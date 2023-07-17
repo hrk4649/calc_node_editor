@@ -10,6 +10,7 @@ offset_right = -753.0
 offset_bottom = -391.0
 grow_horizontal = 2
 grow_vertical = 2
+title = "Table"
 resizable = true
 slot/0/left_enabled = false
 slot/0/left_type = 0
@@ -20,11 +21,11 @@ slot/0/right_type = 0
 slot/0/right_color = Color(1, 1, 1, 1)
 slot/0/right_icon = null
 slot/0/draw_stylebox = true
-slot/1/left_enabled = false
+slot/1/left_enabled = true
 slot/1/left_type = 0
 slot/1/left_color = Color(1, 1, 1, 1)
 slot/1/left_icon = null
-slot/1/right_enabled = false
+slot/1/right_enabled = true
 slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
@@ -76,4 +77,5 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [connection signal="resize_request" from="." to="." method="_on_resize_request"]
+[connection signal="text_changed" from="VBoxContainer/LineEditName" to="." method="_on_line_edit_name_text_changed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/ButtonAddRow" to="." method="_on_button_add_row_pressed"]

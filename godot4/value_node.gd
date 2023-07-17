@@ -19,14 +19,9 @@ func _on_resize_request(new_minsize):
 	self.size = new_minsize
 
 func _on_line_edit_name_text_changed(new_text):
-	emit_signal("change_name", self.name, lineEditName.text)
+	emit_signal("change_name", self.name, new_text)
 
 func _on_line_edit_value_text_changed(new_text):
-	var numValue = null
-	if new_text.contains("."):
-		numValue = float(new_text)
-	else:
-		numValue = int(new_text)
-	emit_signal("change_value", self.name, numValue)
+	emit_signal("change_value", self.name, new_text)
 
 
