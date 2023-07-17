@@ -15,6 +15,9 @@ var node_type:
 func set_value(value):
 	lineEditValue.text = str(value)
 
+func set_node_name(value):
+	lineEditName.text = value
+
 func _on_resize_request(new_minsize):
 	self.size = new_minsize
 

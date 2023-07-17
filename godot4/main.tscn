@@ -71,6 +71,10 @@ text = "GraphEditInfo"
 [node name="MarginContainer3" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
+[node name="ButtonNew" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "New Graph"
+
 [node name="ButtonSave" type="Button" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Save
@@ -100,6 +104,7 @@ access = 2
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonTableNode" to="." method="_on_button_table_node_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonDelete" to="." method="_on_button_delete_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonList" to="." method="_on_button_list_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonNew" to="." method="_on_button_new_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonSave" to="." method="_on_button_save_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonLoad" to="." method="_on_button_load_pressed"]
 [connection signal="connection_request" from="HBoxContainer/GraphEdit" to="." method="_on_graph_edit_connection_request"]

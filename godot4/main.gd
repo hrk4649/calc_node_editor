@@ -183,6 +183,7 @@ func save_file(path):
 	file.store_string(content)
 
 func load_file(path):
+	reset_data()
 	var file = FileAccess.open(path, FileAccess.READ)
 	var content = file.get_as_text()
 	nodes = JSON.parse_string(content)
@@ -192,8 +193,63 @@ func initNodeUIs():
 	var children = graphEdit.get_children()
 	for child in children:
 		graphEdit.remove_child(child)
-	# create nodes
+
+	# create node ui
+	for node in nodes:
+		var node_ui = null
+		match node.type:
+			VALUE:
+				node_ui = create_value_node_ui(node)
+			ADD:
+				node_ui = create_add_op_node_ui(node)
+			SUB:
+				node_ui = create_sub_op_node_ui(node)
+			MUL:
+				node_ui = create_mul_op_node_ui(node)
+			DIV:
+				node_ui = create_div_op_node_ui(node)
+			SUM:
+				node_ui = create_sum_op_node_ui(node)
+			PROD:
+				node_ui = create_prod_op_node_ui(node)
+			TABLE:
+				node_ui = create_table_node_ui(node)
+			_:
+				print("unexpected type:%s" % node.type)
+		if node_ui != null:
+			graphEdit.add_child(node_ui)
+
 	# create edges
+	for node in nodes:
+		for input_idx in range(0, node.input.size()):
+			var input_id = node.input[input_idx]
+			var to_port = 0
+			if node.type in [ADD,SUB,MUL,DIV]:
+				to_port = input_idx
+			graphEdit.connect_node(input_id, 0, node.id, to_port)
+
+	# set names
+	for node in nodes:
+		var node_uis = graphEdit.get_children().filter(func(child):return child.name == node.id)
+		if node.type in [VALUE, TABLE] && node_uis.size() == 1:
+			var node_ui = node_uis[0]
+			node_ui.set_node_name(node.name)
+
+	# set value
+	for node in nodes:
+		var node_uis = graphEdit.get_children().filter(func(child):return child.name == node.id)
+		if is_constant(node) && node_uis.size() == 1:
+			var node_ui = node_uis[0]
+			node_ui.set_value(node.value)
+
+	reflect_values()
+
+
+func reset_data():
+	nodes = []
+	var children = graphEdit.get_children()
+	for child in children:
+		graphEdit.remove_child(child)
 
 func create_value_node():
 	return {
@@ -377,22 +433,6 @@ func _on_button_prod_op_node_pressed():
 	nodes.append(node)
 
 func _on_button_table_node_pressed():
-#	var uiNode = TableNode.instantiate()
-#	uiNode.name = generate_id()
-#	uiNode.node_type = TABLE
-#	graphEdit.add_child(uiNode)
-#	uiNode.connect("change_name", Callable(self, "_on_change_name"))
-#	uiNode.connect("change_table_row", Callable(self, "_on_change_table_row"))
-#	var node = {
-#		"id": uiNode.name,
-#		"type": TABLE,
-#		# row is like {"no":1, "min":0, "max":100, "value":1}
-#		"row": [],
-#		"value": null,
-#		"input": [],
-#		"output": []
-#	}
-#	nodes.append(node)
 	var node = create_table_node()
 	var node_ui = create_table_node_ui(node)
 	graphEdit.add_child(node_ui)
@@ -487,6 +527,10 @@ func _on_button_list_pressed():
 #	for dict in graphEdit.get_connection_list():
 #		print("connection:%s" % [dict])
 
+func _on_button_new_pressed():
+	reset_data()
+
+
 func _on_button_save_pressed():
 	pass # Replace with function body.
 	fileDialog.file_mode = FileDialog.FileMode.FILE_MODE_SAVE_FILE
@@ -508,3 +552,4 @@ func _on_file_dialog_file_selected(path):
 			save_file(path)
 		FileDialog.FileMode.FILE_MODE_OPEN_FILE:
 			load_file(path)
+

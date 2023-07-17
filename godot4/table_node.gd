@@ -17,6 +17,9 @@ var node_type:
 	set(value):
 		pass
 
+func set_node_name(value):
+	lineEditName.text = value
+
 func add_row():
 	pass
 	var lineEditNo = TableNodeLineEdit.instantiate()
