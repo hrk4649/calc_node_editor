@@ -71,6 +71,13 @@ text = "GraphEditInfo"
 [node name="MarginContainer3" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
+[node name="ButtonArrangeNodes" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Arrange Nodes"
+
+[node name="MarginContainer4" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
 [node name="ButtonNew" type="Button" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "New Graph"
@@ -89,6 +96,7 @@ text = "Load
 layout_mode = 2
 size_flags_horizontal = 3
 right_disconnects = true
+scroll_offset = Vector2(-7, 0)
 
 [node name="FileDialog" type="FileDialog" parent="."]
 size = Vector2i(392, 162)
@@ -104,6 +112,7 @@ access = 2
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonTableNode" to="." method="_on_button_table_node_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonDelete" to="." method="_on_button_delete_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonList" to="." method="_on_button_list_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonArrangeNodes" to="." method="_on_button_arrange_nodes_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonNew" to="." method="_on_button_new_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonSave" to="." method="_on_button_save_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonLoad" to="." method="_on_button_load_pressed"]

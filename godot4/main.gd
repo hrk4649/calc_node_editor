@@ -243,7 +243,7 @@ func initNodeUIs():
 			node_ui.set_value(node.value)
 
 	reflect_values()
-
+	graphEdit.arrange_nodes()
 
 func reset_data():
 	nodes = []
@@ -553,3 +553,7 @@ func _on_file_dialog_file_selected(path):
 		FileDialog.FileMode.FILE_MODE_OPEN_FILE:
 			load_file(path)
 
+func _on_button_arrange_nodes_pressed():
+	for child in graphEdit.get_children():
+		child.selected = true
+	graphEdit.arrange_nodes()
