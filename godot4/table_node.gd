@@ -20,8 +20,25 @@ var node_type:
 func set_node_name(value):
 	lineEditName.text = value
 
+func set_row(row):
+	while get_row_count() > 1:
+		delete_row(1)
+	for no in range(0, row.size()):
+		add_row()
+	for no in range (0, row.size()):
+		var no_idx = (no + 1) * gridContainer.columns
+		var lineEditNo = gridContainer.get_child(no_idx)
+		var lineEditMin = gridContainer.get_child(no_idx + 1)
+		var lineEditMax = gridContainer.get_child(no_idx + 2)
+		var lineEditValue = gridContainer.get_child(no_idx + 3)	
+		var r = row[no]
+		
+		lineEditNo.text = str(r.no)
+		lineEditMin.text = str(r.min)
+		lineEditMax.text = str(r.max)
+		lineEditValue.text = str(r.value)
+
 func add_row():
-	pass
 	var lineEditNo = TableNodeLineEdit.instantiate()
 	var lineEditMin = TableNodeLineEdit.instantiate()
 	var lineEditMax = TableNodeLineEdit.instantiate()
@@ -68,7 +85,6 @@ func get_row_count():
 	return int(gridContainer.get_child_count() / gridContainer.columns)
 
 func reset_no_columns():
-	pass
 	for no in range (1, get_row_count()):
 		var no_idx = no * gridContainer.columns
 		var lineEditNo = gridContainer.get_child(no_idx)

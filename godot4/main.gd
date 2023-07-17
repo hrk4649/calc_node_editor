@@ -170,12 +170,13 @@ func calculate_nodes():
 func reflect_values():
 	var children = graphEdit.get_children()
 	for node in nodes:
-		if !is_constant(node):
-			var cands = children.filter(func(child): return child.get_name() == node.id)
-			if cands.size() == 1:
-				var child = cands[0]
-				if child.node_type == VALUE:
-					child.set_value(node.value)
+		var cands = children.filter(func(child): return child.get_name() == node.id)
+		if cands.size() == 1:
+			var child = cands[0]
+			if !is_constant(node) && child.node_type == VALUE:
+				child.set_value(node.value)
+			if node.has("row") && child.node_type == TABLE:
+				child.set_row(node.row)
 
 func save_file(path):
 	var file = FileAccess.open(path, FileAccess.WRITE)
@@ -244,8 +245,13 @@ func initNodeUIs():
 			node_ui.set_value(node.value)
 
 	reflect_values()
-	graphEdit.arrange_nodes()
+	graphEdit_arrange_nodes()
 
+func graphEdit_arrange_nodes():
+	for child in graphEdit.get_children():
+		child.selected = true
+	graphEdit.arrange_nodes()
+	
 func reset_data():
 	nodes = []
 	var children = graphEdit.get_children()
@@ -555,6 +561,4 @@ func _on_file_dialog_file_selected(path):
 			load_file(path)
 
 func _on_button_arrange_nodes_pressed():
-	for child in graphEdit.get_children():
-		child.selected = true
-	graphEdit.arrange_nodes()
+	graphEdit_arrange_nodes()
