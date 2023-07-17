@@ -241,6 +241,24 @@ func create_div_op_node():
 		"output": []
 	}
 
+func create_sum_op_node():
+	return {
+		"id": generate_id(),
+		"type": SUM,
+		"value": null,
+		"input": [],
+		"output": []
+	}
+
+func create_prod_op_node():
+	return {
+		"id": generate_id(),
+		"type": PROD,
+		"value": null,
+		"input": [],
+		"output": []
+	}
+
 func create_value_node_ui(node):
 	var valueNode = ValueNode.instantiate()
 	valueNode.name = node.id
@@ -274,6 +292,20 @@ func create_div_op_node_ui(node):
 	opNode.name = node.id
 	opNode.node_type = DIV
 	opNode.title = "A / B"
+	return opNode
+
+func create_sum_op_node_ui(node):
+	var opNode = NArrOpNode.instantiate()
+	opNode.name = node.id
+	opNode.node_type = SUM
+	opNode.title = "Σ"
+	return opNode
+
+func create_prod_op_node_ui(node):
+	var opNode = NArrOpNode.instantiate()
+	opNode.name = node.id
+	opNode.node_type = PROD
+	opNode.title = "Π"
 	return opNode
 
 func _on_change_table_row(id, row):
@@ -314,33 +346,42 @@ func _on_button_div_op_node_pressed():
 	nodes.append(node)
 
 func _on_button_sum_op_node_pressed():
-	var opNode = NArrOpNode.instantiate()
-	opNode.name = generate_id()
-	opNode.node_type = SUM
-	opNode.title = "Σ"
-	graphEdit.add_child(opNode)
-	var node = {
-		"id": opNode.name,
-		"type": SUM,
-		"value": null,
-		"input": [],
-		"output": []
-	}
+#	var opNode = NArrOpNode.instantiate()
+#	opNode.name = generate_id()
+#	opNode.node_type = SUM
+#	opNode.title = "Σ"
+#	graphEdit.add_child(opNode)
+#	var node = {
+#		"id": opNode.name,
+#		"type": SUM,
+#		"value": null,
+#		"input": [],
+#		"output": []
+#	}
+#	nodes.append(node)
+	var node = create_sum_op_node()
+	var node_ui = create_sum_op_node_ui(node)
+	graphEdit.add_child(node_ui)
 	nodes.append(node)
 
+
 func _on_button_prod_op_node_pressed():
-	var opNode = NArrOpNode.instantiate()
-	opNode.name = generate_id()
-	opNode.node_type = PROD
-	opNode.title = "Π"
-	graphEdit.add_child(opNode)
-	var node = {
-		"id": opNode.name,
-		"type": PROD,
-		"value": null,
-		"input": [],
-		"output": []
-	}
+#	var opNode = NArrOpNode.instantiate()
+#	opNode.name = generate_id()
+#	opNode.node_type = PROD
+#	opNode.title = "Π"
+#	graphEdit.add_child(opNode)
+#	var node = {
+#		"id": opNode.name,
+#		"type": PROD,
+#		"value": null,
+#		"input": [],
+#		"output": []
+#	}
+#	nodes.append(node)
+	var node = create_prod_op_node()
+	var node_ui = create_prod_op_node_ui(node)
+	graphEdit.add_child(node_ui)
 	nodes.append(node)
 
 func _on_button_table_node_pressed():
