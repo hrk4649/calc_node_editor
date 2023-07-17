@@ -259,6 +259,17 @@ func create_prod_op_node():
 		"output": []
 	}
 
+func create_table_node():
+	return {
+		"id": generate_id(),
+		"type": TABLE,
+		# row is like {"no":1, "min":0, "max":100, "value":1}
+		"row": [],
+		"value": null,
+		"input": [],
+		"output": []
+	}
+
 func create_value_node_ui(node):
 	var valueNode = ValueNode.instantiate()
 	valueNode.name = node.id
@@ -308,6 +319,14 @@ func create_prod_op_node_ui(node):
 	opNode.title = "Π"
 	return opNode
 
+func create_table_node_ui(node):
+	var uiNode = TableNode.instantiate()
+	uiNode.name = node.id
+	uiNode.node_type = TABLE
+	uiNode.connect("change_name", Callable(self, "_on_change_name"))
+	uiNode.connect("change_table_row", Callable(self, "_on_change_table_row"))
+	return uiNode
+
 func _on_change_table_row(id, row):
 	print("_on_change_table_row:%s, %s" % [id, row])
 	var node = find_node(id)
@@ -346,60 +365,37 @@ func _on_button_div_op_node_pressed():
 	nodes.append(node)
 
 func _on_button_sum_op_node_pressed():
-#	var opNode = NArrOpNode.instantiate()
-#	opNode.name = generate_id()
-#	opNode.node_type = SUM
-#	opNode.title = "Σ"
-#	graphEdit.add_child(opNode)
-#	var node = {
-#		"id": opNode.name,
-#		"type": SUM,
-#		"value": null,
-#		"input": [],
-#		"output": []
-#	}
-#	nodes.append(node)
 	var node = create_sum_op_node()
 	var node_ui = create_sum_op_node_ui(node)
 	graphEdit.add_child(node_ui)
 	nodes.append(node)
 
-
 func _on_button_prod_op_node_pressed():
-#	var opNode = NArrOpNode.instantiate()
-#	opNode.name = generate_id()
-#	opNode.node_type = PROD
-#	opNode.title = "Π"
-#	graphEdit.add_child(opNode)
-#	var node = {
-#		"id": opNode.name,
-#		"type": PROD,
-#		"value": null,
-#		"input": [],
-#		"output": []
-#	}
-#	nodes.append(node)
 	var node = create_prod_op_node()
 	var node_ui = create_prod_op_node_ui(node)
 	graphEdit.add_child(node_ui)
 	nodes.append(node)
 
 func _on_button_table_node_pressed():
-	var uiNode = TableNode.instantiate()
-	uiNode.name = generate_id()
-	uiNode.node_type = TABLE
-	graphEdit.add_child(uiNode)
-	uiNode.connect("change_name", Callable(self, "_on_change_name"))
-	uiNode.connect("change_table_row", Callable(self, "_on_change_table_row"))
-	var node = {
-		"id": uiNode.name,
-		"type": TABLE,
-		# row is like {"no":1, "min":0, "max":100, "value":1}
-		"row": [],
-		"value": null,
-		"input": [],
-		"output": []
-	}
+#	var uiNode = TableNode.instantiate()
+#	uiNode.name = generate_id()
+#	uiNode.node_type = TABLE
+#	graphEdit.add_child(uiNode)
+#	uiNode.connect("change_name", Callable(self, "_on_change_name"))
+#	uiNode.connect("change_table_row", Callable(self, "_on_change_table_row"))
+#	var node = {
+#		"id": uiNode.name,
+#		"type": TABLE,
+#		# row is like {"no":1, "min":0, "max":100, "value":1}
+#		"row": [],
+#		"value": null,
+#		"input": [],
+#		"output": []
+#	}
+#	nodes.append(node)
+	var node = create_table_node()
+	var node_ui = create_table_node_ui(node)
+	graphEdit.add_child(node_ui)
 	nodes.append(node)
 
 func _on_change_name(id, node_name):
