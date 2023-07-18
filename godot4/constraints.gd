@@ -18,3 +18,5 @@ const SUM = "sum"
 const PROD = "prod"
 # Table
 const TABLE = "table"
+# Functions
+const FUNC = "func"

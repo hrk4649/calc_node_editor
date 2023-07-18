@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://ddpmvs1yww7wr"]
+
+[ext_resource type="Script" path="res://func_node.gd" id="1_iorv5"]
+
+[node name="FuncNode" type="GraphNode"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1040.0
+offset_bottom = -534.0
+grow_horizontal = 2
+grow_vertical = 2
+title = "Func"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+script = ExtResource("1_iorv5")
+
+[node name="OptionButton" type="OptionButton" parent="."]
+layout_mode = 2
+
+[connection signal="item_selected" from="OptionButton" to="." method="_on_option_button_item_selected"]

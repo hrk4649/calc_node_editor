@@ -4,6 +4,7 @@ var ValueNode = preload("res://value_node.tscn")
 var OpNode = preload("res://op_node.tscn")
 var NArrOpNode = preload("res://n_ary_op_node.tscn")
 var TableNode = preload("res://table_node.tscn")
+var FuncNode = preload("res://func_node.tscn")
 
 const VALUE = Constraints.VALUE
 const ADD = Constraints.ADD
@@ -13,6 +14,7 @@ const DIV = Constraints.DIV
 const SUM = Constraints.SUM
 const PROD = Constraints.PROD
 const TABLE = Constraints.TABLE
+const FUNC = Constraints.FUNC
 
 @onready var graphEdit = $HBoxContainer/GraphEdit
 @onready var fileDialog = $FileDialog
@@ -106,8 +108,37 @@ func process_node(node):
 			process_node_n_ary(node, proc, 1)
 		TABLE:
 			process_node_table(node)
+		FUNC:
+			process_node_func(node)
 		_:
 			print("unsupported type:%s" % node.type)
+
+func process_node_func(node):
+	if node.input.size() != 1:
+		print("process_node_func:no input")
+		return
+	var input_values = get_input_values(node)
+	if input_values.size() != 1:
+		print("process_node_func:no input value")
+		return
+	var input_value = input_values[0]	
+
+	if !(typeof(input_value) in [TYPE_INT, TYPE_FLOAT]):
+		print("process_node_func:no int or float value:%s" % input_value)
+		return
+
+	match node.func_name:
+		"round":
+			node.value = round(input_value)
+		"floor":
+			node.value = floor(input_value)
+		"ceil":
+			node.value = ceil(input_value)			
+		"sin":
+			node.value = sin(input_value)
+		_:
+			print("process_node_func:unsupported func name:%s" % node.func_name)
+
 
 func process_node_table(node):
 	if node.input.size() != 1:
@@ -120,6 +151,7 @@ func process_node_table(node):
 	var input_value = input_values[0]
 	
 	if !(typeof(input_value) in [TYPE_INT, TYPE_FLOAT]):
+		print("process_node_table:no int or float value:%s" % input_value)
 		return
 	
 	# find row
@@ -215,6 +247,8 @@ func initNodeUIs():
 				node_ui = create_prod_op_node_ui(node)
 			TABLE:
 				node_ui = create_table_node_ui(node)
+			FUNC:
+				node_ui = create_func_node_ui(node)
 			_:
 				print("unexpected type:%s" % node.type)
 		if node_ui != null:
@@ -333,6 +367,17 @@ func create_table_node():
 		"output": []
 	}
 
+func create_func_node():
+	return {
+		"id": generate_id(),
+		"type": FUNC,
+		"func_name": null,
+		"value": null,
+		"input": [],
+		"output": []
+	}
+
+
 func create_value_node_ui(node):
 	var valueNode = ValueNode.instantiate()
 	valueNode.name = node.id
@@ -390,6 +435,12 @@ func create_table_node_ui(node):
 	uiNode.connect("change_table_row", Callable(self, "_on_change_table_row"))
 	return uiNode
 
+func create_func_node_ui(node):
+	var uiNode = FuncNode.instantiate()
+	uiNode.name = node.id
+	uiNode.connect("change_func", Callable(self, "_on_change_func"))
+	return uiNode
+
 func _on_change_table_row(id, row):
 	print("_on_change_table_row:%s, %s" % [id, row])
 	var node = find_node(id)
@@ -445,6 +496,12 @@ func _on_button_table_node_pressed():
 	graphEdit.add_child(node_ui)
 	nodes.append(node)
 
+func _on_button_func_node_pressed():
+	var node = create_func_node()
+	var node_ui = create_func_node_ui(node)
+	graphEdit.add_child(node_ui)
+	nodes.append(node)
+
 func _on_change_name(id, node_name):
 	print("_on_change_name:%s, %s" % [id, node_name])
 	var node = find_node(id)
@@ -459,6 +516,13 @@ func _on_change_value(id, value):
 		node.value = Utils.text_to_value(value)
 		calculate_nodes()
 		reflect_values()
+
+func _on_change_func(id, func_name):
+	print("_on_change_func:%s, %s" % [id, func_name])
+	var node = find_node(id)
+	node.func_name = func_name
+	calculate_nodes()
+	reflect_values()
 
 func _on_button_delete_pressed():
 	for node in graphEdit.get_children():
@@ -562,3 +626,5 @@ func _on_file_dialog_file_selected(path):
 
 func _on_button_arrange_nodes_pressed():
 	graphEdit_arrange_nodes()
+
+
