@@ -9,7 +9,7 @@ signal change_value(id, value)
 var node_type: 
 	get:
 		return Constraints.VALUE
-	set(value):
+	set(_value):
 		pass
 
 func set_value(value):

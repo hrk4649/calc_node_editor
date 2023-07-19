@@ -9,7 +9,7 @@ var funcs = ["","round","floor","ceil","sin"]
 var node_type: 
 	get:
 		return Constraints.FUNC
-	set(value):
+	set(_value):
 		pass
 
 func set_func_name(func_name):

@@ -8,13 +8,12 @@ var TableNodeButton = preload("res://table_node_button.tscn")
 
 @onready var lineEditName = $VBoxContainer/LineEditName
 @onready var buttonAddRow = $VBoxContainer/HBoxContainer/ButtonAddRow
-@onready var buttonDelRow = $VBoxContainer/HBoxContainer/ButtonDelRow
 @onready var gridContainer = $VBoxContainer/GridContainer
 
 var node_type: 
 	get:
 		return Constraints.TABLE
-	set(value):
+	set(_value):
 		pass
 
 func set_node_name(value):
@@ -94,7 +93,7 @@ func refresh_row():
 	var row_ary = []
 	for no in range (1, get_row_count()):
 		var no_idx = no * gridContainer.columns
-		var lineEditNo = gridContainer.get_child(no_idx)
+		# var lineEditNo = gridContainer.get_child(no_idx)
 		var lineEditMin = gridContainer.get_child(no_idx + 1)
 		var lineEditMax = gridContainer.get_child(no_idx + 2)
 		var lineEditValue = gridContainer.get_child(no_idx + 3)
@@ -122,5 +121,5 @@ func _on_button_add_row_pressed():
 func _on_resize_request(new_minsize):
 	self.size = new_minsize
 
-func _on_line_edit_name_text_changed(new_text):
+func _on_line_edit_name_text_changed(_new_text):
 	emit_signal("change_name", self.name, lineEditName.text)
