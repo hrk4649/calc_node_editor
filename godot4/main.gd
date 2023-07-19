@@ -33,6 +33,12 @@ func find_node(id):
 		return null
 	return candidates[0]
 
+func find_node_ui(id):
+	var node_uis = graphEdit.get_children().filter(func(child):return child.name == id)
+	if node_uis.size() == 1:
+		return node_uis[0]
+	return null
+
 func is_constant(node):
 	return (node.type == VALUE &&
 			node.input.size() == 0)
@@ -200,15 +206,14 @@ func calculate_nodes():
 				processed.append(node)
 
 func reflect_values():
-	var children = graphEdit.get_children()
 	for node in nodes:
-		var cands = children.filter(func(child): return child.get_name() == node.id)
-		if cands.size() == 1:
-			var child = cands[0]
-			if !is_constant(node) && child.node_type == VALUE:
-				child.set_value(node.value)
-			if node.has("row") && child.node_type == TABLE:
-				child.set_row(node.row)
+		var child = find_node_ui(node.id)
+		if child == null:
+			continue
+		if !is_constant(node) && child.node_type == VALUE:
+			child.set_value(node.value)
+		if node.has("row") && child.node_type == TABLE:
+			child.set_row(node.row)
 
 func save_file(path):
 	var file = FileAccess.open(path, FileAccess.WRITE)
@@ -263,26 +268,20 @@ func initNodeUIs():
 				to_port = input_idx
 			graphEdit.connect_node(input_id, 0, node.id, to_port)
 
-	# set names
 	for node in nodes:
-		var node_uis = graphEdit.get_children().filter(func(child):return child.name == node.id)
-		if node.type in [VALUE, TABLE] && node_uis.size() == 1:
-			var node_ui = node_uis[0]
+		var node_ui = find_node_ui(node.id)
+		if node_ui == null:
+			continue
+		# set names
+		if node.type in [VALUE, TABLE]:
 			if node.has("name") && node.name != null:
 				node_ui.set_node_name(node.name)
-
-	# set func_name
-	for node in nodes:
-		var node_uis = graphEdit.get_children().filter(func(child):return child.name == node.id)
-		if node.type == FUNC && node_uis.size() == 1:
-			var node_ui = node_uis[0]
+		# set func_name
+		if node.type == FUNC:
 			if node.has("func_name") && node.func_name != null:
 				node_ui.set_func_name(node.func_name)
-	# set value
-	for node in nodes:
-		var node_uis = graphEdit.get_children().filter(func(child):return child.name == node.id)
-		if is_constant(node) && node_uis.size() == 1:
-			var node_ui = node_uis[0]
+		# set value
+		if is_constant(node):
 			node_ui.set_value(node.value)
 
 	reflect_values()
