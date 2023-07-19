@@ -12,6 +12,9 @@ var node_type:
 	set(value):
 		pass
 
+func set_func_name(func_name):
+	optionButton.select(funcs.find(func_name))
+
 func _ready():
 	for idx in range(0, funcs.size()):
 		var func_name = funcs[idx]

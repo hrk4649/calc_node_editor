@@ -268,9 +268,16 @@ func initNodeUIs():
 		var node_uis = graphEdit.get_children().filter(func(child):return child.name == node.id)
 		if node.type in [VALUE, TABLE] && node_uis.size() == 1:
 			var node_ui = node_uis[0]
-			if node.has("name"):
+			if node.has("name") && node.name != null:
 				node_ui.set_node_name(node.name)
 
+	# set func_name
+	for node in nodes:
+		var node_uis = graphEdit.get_children().filter(func(child):return child.name == node.id)
+		if node.type == FUNC && node_uis.size() == 1:
+			var node_ui = node_uis[0]
+			if node.has("func_name") && node.func_name != null:
+				node_ui.set_func_name(node.func_name)
 	# set value
 	for node in nodes:
 		var node_uis = graphEdit.get_children().filter(func(child):return child.name == node.id)
