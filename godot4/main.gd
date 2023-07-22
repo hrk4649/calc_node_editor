@@ -28,13 +28,15 @@ func generate_id():
 	return Uuid.v4()
 
 func find_node(id):
-	var candidates = nodes.filter(func(node):return node.id == id)
+	var f = func(node):return node.id == id
+	var candidates = nodes.filter(f)
 	if candidates.size() != 1:
 		return null
 	return candidates[0]
 
 func find_node_ui(id):
-	var node_uis = graphEdit.get_children().filter(func(child):return child.name == id)
+	var f = func(child):return child.name == id
+	var node_uis = graphEdit.get_children().filter(f)
 	if node_uis.size() == 1:
 		return node_uis[0]
 	return null
@@ -61,9 +63,10 @@ func remove_node(to_remove):
 	nodes.erase(to_remove)
 
 func get_input_values(node):
-	var input_nodes = node.input.map(func(id):return find_node(id)).filter(func(node): return node != null)
+	var not_null = func(v): return v != null
+	var input_nodes = node.input.map(func(id):return find_node(id)).filter(not_null)
 	var input_values = input_nodes.map(func(node):if node.has(VALUE):return node.value else: return null)
-	var result = input_values.filter(func(v):return v != null)
+	var result = input_values.filter(not_null)
 	return result
 
 func can_process_node(node):
