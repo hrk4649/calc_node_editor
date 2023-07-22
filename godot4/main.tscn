@@ -102,7 +102,7 @@ size_flags_horizontal = 3
 right_disconnects = true
 
 [node name="FileDialog" type="FileDialog" parent="."]
-size = Vector2i(392, 162)
+size = Vector2i(452, 162)
 access = 2
 
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonValueNode" to="." method="_on_button_value_node_pressed"]

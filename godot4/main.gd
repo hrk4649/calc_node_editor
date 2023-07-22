@@ -64,8 +64,13 @@ func remove_node(to_remove):
 
 func get_input_values(node):
 	var not_null = func(v): return v != null
-	var input_nodes = node.input.map(func(id):return find_node(id)).filter(not_null)
-	var input_values = input_nodes.map(func(node):if node.has(VALUE):return node.value else: return null)
+	var f1 = func(id):return find_node(id)
+	var input_nodes = node.input.map(f1).filter(not_null)
+	var f2 = func(node):
+		if node.has(VALUE):
+			return node.value
+		else: return null
+	var input_values = input_nodes.map(f2)
 	var result = input_values.filter(not_null)
 	return result
 
@@ -291,6 +296,7 @@ func initNodeUIs():
 	graphEdit_arrange_nodes()
 
 func graphEdit_arrange_nodes():
+	await get_tree().process_frame
 	for child in graphEdit.get_children():
 		child.selected = true
 	graphEdit.arrange_nodes()
