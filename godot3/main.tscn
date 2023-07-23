@@ -129,3 +129,7 @@ margin_left = 110.0
 margin_right = 1024.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
+
+[node name="FileDialog" type="FileDialog" parent="."]
+margin_right = 315.0
+margin_bottom = 130.0

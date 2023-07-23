@@ -16,8 +16,8 @@ const PROD = Constraints.PROD
 const TABLE = Constraints.TABLE
 const FUNC = Constraints.FUNC
 
-@onready var graphEdit = $HBoxContainer/GraphEdit
-@onready var fileDialog = $FileDialog
+onready var graphEdit = $HBoxContainer/GraphEdit
+onready var fileDialog = $FileDialog
 
 var nodes = []
 
@@ -27,18 +27,17 @@ func _ready():
 func generate_id():
     return Uuid.v4()
 
-func find_node(id):
-    var f = func(node):return node.id == id
-    var candidates = nodes.filter(f)
-    if candidates.size() != 1:
-        return null
-    return candidates[0]
+
+func find_my_node(id):
+    for node in nodes:
+        if node.id == id:
+            return node
+    return null
 
 func find_node_ui(id):
-    var f = func(child):return child.name == id
-    var node_uis = graphEdit.get_children().filter(f)
-    if node_uis.size() == 1:
-        return node_uis[0]
+    for child in graphEdit.get_children():
+        if child.name == id:
+            return child
     return null
 
 func is_constant(node):
@@ -63,15 +62,20 @@ func remove_node(to_remove):
     nodes.erase(to_remove)
 
 func get_input_values(node):
-    var not_null = func(v): return v != null
-    var f1 = func(id):return find_node(id)
-    var input_nodes = node.input.map(f1).filter(not_null)
-    var f2 = func(node):
-        if node.has(VALUE):
-            return node.value
-        else: return null
-    var input_values = input_nodes.map(f2)
-    var result = input_values.filter(not_null)
+    var input_nodes = []
+    for id in node.input:
+        var n = find_my_node(id)
+        if n != null:
+            input_nodes.append(n)
+
+    var input_values = []
+    for input_node in input_nodes:
+        if input_node.has(VALUE):
+            var value = input_node[VALUE]
+            if value != null:
+                input_values.append(value)
+
+    var result = input_values
     return result
 
 func can_process_node(node):
@@ -98,28 +102,12 @@ func process_node(node):
                 var input_values = get_input_values(node)
                 if input_values.size() == 1:
                     node.value = input_values[0]
-        ADD:
-            var proc = func add(a,b):return a + b
-            process_node_2op(node, proc)
-        SUB:
-            var proc = func sub(a,b):return a - b
-            process_node_2op(node, proc)
-        MUL:
-            var proc = func mul(a,b):return a * b
-            process_node_2op(node, proc)
-        DIV:
-            var proc = func div(a,b):
-                if b == 0:
-                    return null
-                else:
-                    return a / b
-            process_node_2op(node, proc)
+        ADD,SUB,MUL,DIV:
+            process_node_2op(node)
         SUM:
-            var proc = func(accum, elem): return accum + elem
-            process_node_n_ary(node, proc, 0)
+            process_node_n_ary(node)
         PROD:
-            var proc = func(accum, elem): return accum * elem
-            process_node_n_ary(node, proc, 1)
+            process_node_n_ary(node)
         TABLE:
             process_node_table(node)
         FUNC:
@@ -137,7 +125,7 @@ func process_node_func(node):
         return
     var input_value = input_values[0]	
 
-    if !(typeof(input_value) in [TYPE_INT, TYPE_FLOAT]):
+    if !(typeof(input_value) in [TYPE_INT, TYPE_REAL]):
         print("process_node_func:no int or float value:%s" % input_value)
         return
 
@@ -164,7 +152,7 @@ func process_node_table(node):
         return
     var input_value = input_values[0]
     
-    if !(typeof(input_value) in [TYPE_INT, TYPE_FLOAT]):
+    if !(typeof(input_value) in [TYPE_INT, TYPE_REAL]):
         print("process_node_table:no int or float value:%s" % input_value)
         return
     
@@ -177,23 +165,42 @@ func process_node_table(node):
             node.value = row.value
             break
 
-func process_node_n_ary(node, proc, initValue):
+func process_node_n_ary(node):
     # set node.value
     if node.input.size() == 0:
         # do nothing
         pass
     elif is_input_available(node):
         var input_values = get_input_values(node)
-        var result = input_values.reduce(proc, initValue)
+        var result
+        match node.type:
+            SUM:
+                result = 0
+                for value in input_values:
+                    result = result + value
+            PROD:
+                result = 1
+                for value in input_values:
+                    result = result * value
         node.value = result
 
-func process_node_2op(node, lambda):
+func process_node_2op(node):
     if node.input.size() == 2 && node.input[0] != null && node.input[1] != null:
         var input_values = get_input_values(node)
         if input_values.size() == 2:
             var inputA = input_values[0]
             var inputB = input_values[1]
-            var result = lambda.call(inputA, inputB)
+            var result = null
+            match node.type:
+                ADD:
+                    result = inputA + inputB
+                SUB:
+                    result = inputA - inputB
+                MUL:
+                    result = inputA * inputB
+                DIV:
+                    if inputB != 0:
+                        result = inputA + inputB
             node.value = result
 
 func calculate_nodes():
@@ -224,14 +231,18 @@ func reflect_values():
             child.set_row(node.row)
 
 func save_file(path):
-    var file = FileAccess.open(path, FileAccess.WRITE)
+    var file = File.new()
+    file.open(path, File.WRITE)
     var content = JSON.stringify(nodes)
     file.store_string(content)
+    file.close()
 
 func load_file(path):
     reset_data()
-    var file = FileAccess.open(path, FileAccess.READ)
+    var file = File.new()
+    file.open(path, File.READ)
     var content = file.get_as_text()
+    file.close()
     nodes = JSON.parse_string(content)
     initNodeUIs()
 
@@ -296,7 +307,7 @@ func initNodeUIs():
     graphEdit_arrange_nodes()
 
 func graphEdit_arrange_nodes():
-    await get_tree().process_frame
+    yield(get_tree(), "idle_frame")
     for child in graphEdit.get_children():
         child.selected = true
     graphEdit.arrange_nodes()
@@ -396,8 +407,8 @@ func create_func_node():
 func create_value_node_ui(node):
     var valueNode = ValueNode.instantiate()
     valueNode.name = node.id
-    valueNode.connect("change_name", Callable(self, "_on_change_name"))
-    valueNode.connect("change_value", Callable(self, "_on_change_value"))
+    valueNode.connect("change_name", self, "_on_change_name")
+    valueNode.connect("change_value", self, "_on_change_value")
     return valueNode
 
 func create_add_op_node_ui(node):
@@ -446,19 +457,19 @@ func create_table_node_ui(node):
     var uiNode = TableNode.instantiate()
     uiNode.name = node.id
     uiNode.node_type = TABLE
-    uiNode.connect("change_name", Callable(self, "_on_change_name"))
-    uiNode.connect("change_table_row", Callable(self, "_on_change_table_row"))
+    uiNode.connect("change_name", self, "_on_change_name")
+    uiNode.connect("change_table_row", self, "_on_change_table_row")
     return uiNode
 
 func create_func_node_ui(node):
     var uiNode = FuncNode.instantiate()
     uiNode.name = node.id
-    uiNode.connect("change_func", Callable(self, "_on_change_func"))
+    uiNode.connect("change_func", self, "_on_change_func")
     return uiNode
 
 func _on_change_table_row(id, row):
     print("_on_change_table_row:%s, %s" % [id, row])
-    var node = find_node(id)
+    var node = find_my_node(id)
     node.row = row
     calculate_nodes()
     reflect_values()
@@ -519,13 +530,13 @@ func _on_button_func_node_pressed():
 
 func _on_change_name(id, node_name):
     print("_on_change_name:%s, %s" % [id, node_name])
-    var node = find_node(id)
+    var node = find_my_node(id)
     # set value if there is no input
     node.name = node_name
 
 func _on_change_value(id, value):
     print("_on_change_value:%s, %s" % [id, value])
-    var node = find_node(id)
+    var node = find_my_node(id)
     # set value if there is no input
     if node.input.size() == 0:
         node.value = Utils.text_to_value(value)
@@ -534,24 +545,24 @@ func _on_change_value(id, value):
 
 func _on_change_func(id, func_name):
     print("_on_change_func:%s, %s" % [id, func_name])
-    var node = find_node(id)
+    var node = find_my_node(id)
     node.func_name = func_name
     calculate_nodes()
     reflect_values()
 
 func _on_button_delete_pressed():
-    for node in graphEdit.get_children():
-        var className = node.get_class()
+    for node_ui in graphEdit.get_children():
+        var className = node_ui.get_class()
         if className == "GraphNode":
-            if node.selected:
-                var to_remove = find_node(node.get_name())
+            if node_ui.selected:
+                var to_remove = find_my_node(node_ui.get_name())
                 remove_node(to_remove)
-                graphEdit.remove_child(node)
+                graphEdit.remove_child(node_ui)
                 break
 
 func _on_graph_edit_connection_request(from_node, from_port, to_node, to_port):
-    var from = find_node(from_node)
-    var to = find_node(to_node)
+    var from = find_my_node(from_node)
+    var to = find_my_node(to_node)
     if from == null:
         print("from_node %s is not found" % from_node)
         return
@@ -581,8 +592,8 @@ func _on_graph_edit_connection_request(from_node, from_port, to_node, to_port):
     reflect_values()
 
 func _on_graph_edit_disconnection_request(from_node, from_port, to_node, to_port):
-    var from = find_node(from_node)
-    var to = find_node(to_node)
+    var from = find_my_node(from_node)
+    var to = find_my_node(to_node)
     if from == null:
         print("from_node %s is not found" % from_node)
         return
