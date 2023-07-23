@@ -312,12 +312,77 @@ func initNodeUIs():
 
 func graphEdit_arrange_nodes():
     yield(get_tree(), "idle_frame")
-    for child in graphEdit.get_children():
-        var child_class = child.get_class()
-        if child_class == "GraphNode":        
-            child.selected = true
-    # graphEdit.arrange_nodes()
-    
+#    for child in graphEdit.get_children():
+#        var child_class = child.get_class()
+#        if child_class == "GraphNode":
+#            child.selected = true
+    arrange_nodes()
+
+func count_node_in_layers(layers):
+    var count = 0
+    for layer in layers:
+        count = count + layer.size()
+    return count
+
+func add_node_layer(node, layers, layer_index):
+    if layer_index >= layers.size():
+        var need = (layer_index + 1) - layers.size()
+        for _idx in range(0, need):
+            layers.append([])
+    var layer = layers[layer_index]
+    var idx = layer.find(node)
+    if idx == -1:
+        layer.append(node)
+
+func get_highest_layer(id_array, layers):
+    var highest_layer = -1
+    for id in id_array:
+        var is_found = false
+        for idx in range(0, layers.size()):
+            var layer = layers[idx]
+            for node in layer:
+                if node.id == id:
+                    is_found = true
+                    break
+            if is_found && highest_layer < idx:
+                highest_layer = idx
+                break
+        
+    return highest_layer
+
+func arrange_nodes():
+    pass
+    var layers = []
+    var loop_count = 0
+    var max_loop_count = nodes.size()
+    while true:
+        pass
+        var count1 = count_node_in_layers(layers)
+        if count1 == nodes.size() || loop_count > max_loop_count:
+            break
+        loop_count = loop_count + 1
+        for node in nodes:
+            if get_highest_layer([node.id], layers) >= 0:
+                continue
+            if node.input.size() == 0:
+                # add node layer 0
+                add_node_layer(node, layers, 0)
+            else:
+                # 
+                var highest_layer = get_highest_layer(node.input, layers)
+                if highest_layer >= 0:
+                    add_node_layer(node, layers, highest_layer + 1)
+    var count2 = count_node_in_layers(layers)
+    var origin = Vector2.ZERO
+    var grid_size = Vector2(100,100)
+    if count2 == nodes.size():
+        for idx1 in range(0, layers.size()):
+            var layer = layers[idx1]
+            for idx2 in range(0, layer.size()):
+                var node = layer[idx2]
+                var node_ui = find_node_ui(node.id)
+                node_ui.rect_position = origin + Vector2(grid_size.x * idx1, grid_size.y * idx2)
+
 func reset_data():
     nodes = []
     var children = graphEdit.get_children()
