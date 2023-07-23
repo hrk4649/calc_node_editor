@@ -200,7 +200,7 @@ func process_node_2op(node):
                     result = inputA * inputB
                 DIV:
                     if inputB != 0:
-                        result = inputA + inputB
+                        result = inputA / inputB
             node.value = result
 
 func calculate_nodes():
@@ -242,14 +242,18 @@ func load_file(path):
     var file = File.new()
     file.open(path, File.READ)
     var content = file.get_as_text()
+    print("load_file:content:%s" % content)
     file.close()
-    nodes = JSON.parse_string(content)
+    var result = JSON.parse(content)
+    nodes = result.result
     initNodeUIs()
 
 func initNodeUIs():
     var children = graphEdit.get_children()
     for child in children:
-        graphEdit.remove_child(child)
+        var child_class = child.get_class()
+        if child_class == "GraphNode":
+            graphEdit.remove_child(child)
 
     # create node ui
     for node in nodes:
@@ -309,14 +313,18 @@ func initNodeUIs():
 func graphEdit_arrange_nodes():
     yield(get_tree(), "idle_frame")
     for child in graphEdit.get_children():
-        child.selected = true
-    graphEdit.arrange_nodes()
+        var child_class = child.get_class()
+        if child_class == "GraphNode":        
+            child.selected = true
+    # graphEdit.arrange_nodes()
     
 func reset_data():
     nodes = []
     var children = graphEdit.get_children()
     for child in children:
-        graphEdit.remove_child(child)
+        var child_class = child.get_class()
+        if child_class == "GraphNode":
+            graphEdit.remove_child(child)
 
 func create_value_node():
     return {
@@ -637,17 +645,17 @@ func _on_button_save_pressed():
 
 func _on_button_load_pressed():
     pass # Replace with function body.
-    fileDialog.file_mode = FileDialog.FileMode.FILE_MODE_OPEN_FILE
-    fileDialog.size = self.size * 0.8
-    fileDialog.position = self.size * 0.5 - fileDialog.size * 0.5
+    fileDialog.mode = FileDialog.MODE_OPEN_FILE
+    fileDialog.rect_size = self.rect_size * 0.8
+    fileDialog.rect_position = self.rect_size * 0.5 - fileDialog.rect_size * 0.5
     fileDialog.show()
 
 func _on_file_dialog_file_selected(path):
     print("_on_file_dialog_file_selected:%s" % path)
-    match fileDialog.file_mode:
-        FileDialog.FileMode.FILE_MODE_SAVE_FILE:
+    match fileDialog.mode:
+        FileDialog.MODE_SAVE_FILE:
             save_file(path)
-        FileDialog.FileMode.FILE_MODE_OPEN_FILE:
+        FileDialog.MODE_OPEN_FILE:
             load_file(path)
 
 func _on_button_arrange_nodes_pressed():

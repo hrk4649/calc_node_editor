@@ -129,10 +129,12 @@ margin_left = 110.0
 margin_right = 1024.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
+right_disconnects = true
 
 [node name="FileDialog" type="FileDialog" parent="."]
 margin_right = 315.0
 margin_bottom = 130.0
+access = 2
 
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonValueNode" to="." method="_on_button_value_node_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonAddOpNode" to="." method="_on_button_add_op_node_pressed"]
@@ -149,4 +151,6 @@ margin_bottom = 130.0
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonNew" to="." method="_on_button_new_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonSave" to="." method="_on_button_save_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonLoad" to="." method="_on_button_load_pressed"]
-[connection signal="files_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="connection_request" from="HBoxContainer/GraphEdit" to="." method="_on_graph_edit_connection_request"]
+[connection signal="disconnection_request" from="HBoxContainer/GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
