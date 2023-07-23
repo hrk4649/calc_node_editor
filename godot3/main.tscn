@@ -133,3 +133,20 @@ size_flags_horizontal = 3
 [node name="FileDialog" type="FileDialog" parent="."]
 margin_right = 315.0
 margin_bottom = 130.0
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonValueNode" to="." method="_on_button_value_node_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonAddOpNode" to="." method="_on_button_add_op_node_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonSubOpNode" to="." method="_on_button_sub_op_node_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonMulOpNode" to="." method="_on_button_mul_op_node_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonDivOpNode" to="." method="_on_button_div_op_node_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonSumOpNode" to="." method="_on_button_sum_op_node_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonProdOpNode" to="." method="_on_button_prod_op_node_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonTableNode" to="." method="_on_button_table_node_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonFuncNode" to="." method="_on_button_func_node_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonDelete" to="." method="_on_button_delete_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonList" to="." method="_on_button_list_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonArrangeNodes" to="." method="_on_button_arrange_nodes_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonNew" to="." method="_on_button_new_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonSave" to="." method="_on_button_save_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonLoad" to="." method="_on_button_load_pressed"]
+[connection signal="files_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
