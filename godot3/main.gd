@@ -405,56 +405,56 @@ func create_func_node():
 
 
 func create_value_node_ui(node):
-    var valueNode = ValueNode.instantiate()
+    var valueNode = ValueNode.instance()
     valueNode.name = node.id
     valueNode.connect("change_name", self, "_on_change_name")
     valueNode.connect("change_value", self, "_on_change_value")
     return valueNode
 
 func create_add_op_node_ui(node):
-    var opNode = OpNode.instantiate()
+    var opNode = OpNode.instance()
     opNode.name = node.id
     opNode.node_type = ADD
     opNode.title = "A + B"
     return opNode
 
 func create_sub_op_node_ui(node):
-    var opNode = OpNode.instantiate()
+    var opNode = OpNode.instance()
     opNode.name = node.id
     opNode.node_type = SUB
     opNode.title = "A - B"
     return opNode
 
 func create_mul_op_node_ui(node):
-    var opNode = OpNode.instantiate()
+    var opNode = OpNode.instance()
     opNode.name = node.id
     opNode.node_type = MUL
     opNode.title = "A x B"
     return opNode
 
 func create_div_op_node_ui(node):
-    var opNode = OpNode.instantiate()
+    var opNode = OpNode.instance()
     opNode.name = node.id
     opNode.node_type = DIV
     opNode.title = "A / B"
     return opNode
 
 func create_sum_op_node_ui(node):
-    var opNode = NArrOpNode.instantiate()
+    var opNode = NArrOpNode.instance()
     opNode.name = node.id
     opNode.node_type = SUM
     opNode.title = "Σ"
     return opNode
 
 func create_prod_op_node_ui(node):
-    var opNode = NArrOpNode.instantiate()
+    var opNode = NArrOpNode.instance()
     opNode.name = node.id
     opNode.node_type = PROD
     opNode.title = "Π"
     return opNode
 
 func create_table_node_ui(node):
-    var uiNode = TableNode.instantiate()
+    var uiNode = TableNode.instance()
     uiNode.name = node.id
     uiNode.node_type = TABLE
     uiNode.connect("change_name", self, "_on_change_name")
@@ -462,7 +462,7 @@ func create_table_node_ui(node):
     return uiNode
 
 func create_func_node_ui(node):
-    var uiNode = FuncNode.instantiate()
+    var uiNode = FuncNode.instance()
     uiNode.name = node.id
     uiNode.connect("change_func", self, "_on_change_func")
     return uiNode
