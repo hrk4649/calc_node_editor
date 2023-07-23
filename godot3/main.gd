@@ -233,7 +233,7 @@ func reflect_values():
 func save_file(path):
     var file = File.new()
     file.open(path, File.WRITE)
-    var content = JSON.stringify(nodes)
+    var content = JSON.print(nodes)
     file.store_string(content)
     file.close()
 
@@ -638,9 +638,9 @@ func _on_button_new_pressed():
 
 func _on_button_save_pressed():
     pass # Replace with function body.
-    fileDialog.file_mode = FileDialog.FileMode.FILE_MODE_SAVE_FILE
-    fileDialog.size = self.size * 0.8
-    fileDialog.position = self.size * 0.5 - fileDialog.size * 0.5
+    fileDialog.mode = FileDialog.MODE_SAVE_FILE
+    fileDialog.rect_size = self.rect_size * 0.8
+    fileDialog.rect_position = self.rect_size * 0.5 - fileDialog.rect_size * 0.5
     fileDialog.show()
 
 func _on_button_load_pressed():
