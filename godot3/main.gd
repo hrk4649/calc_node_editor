@@ -247,6 +247,7 @@ func load_file(path):
     var result = JSON.parse(content)
     nodes = result.result
     initNodeUIs()
+    arrange_nodes()
 
 func initNodeUIs():
     var children = graphEdit.get_children()
@@ -308,7 +309,6 @@ func initNodeUIs():
             node_ui.set_value(node.value)
 
     reflect_values()
-    graphEdit_arrange_nodes()
 
 func graphEdit_arrange_nodes():
     yield(get_tree(), "idle_frame")
@@ -374,14 +374,16 @@ func arrange_nodes():
                     add_node_layer(node, layers, highest_layer + 1)
     var count2 = count_node_in_layers(layers)
     var origin = Vector2.ZERO
-    var grid_size = Vector2(100,100)
+    var grid_size = Vector2(160,160)
     if count2 == nodes.size():
         for idx1 in range(0, layers.size()):
             var layer = layers[idx1]
             for idx2 in range(0, layer.size()):
                 var node = layer[idx2]
                 var node_ui = find_node_ui(node.id)
-                node_ui.rect_position = origin + Vector2(grid_size.x * idx1, grid_size.y * idx2)
+                var pos = origin + Vector2(grid_size.x * idx1, grid_size.y * idx2)
+                node_ui.offset = pos
+                graphEdit.add_child(node_ui)
 
 func reset_data():
     nodes = []
