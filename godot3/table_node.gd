@@ -40,19 +40,19 @@ func set_row(row):
         lineEditValue.text = str(r.value)
 
 func add_row():
-    var lineEditNo = TableNodeLineEdit.instantiate()
-    var lineEditMin = TableNodeLineEdit.instantiate()
-    var lineEditMax = TableNodeLineEdit.instantiate()
-    var lineEditValue = TableNodeLineEdit.instantiate()
-    var buttonDelete = TableNodeButton.instantiate()
+    var lineEditNo = TableNodeLineEdit.instance()
+    var lineEditMin = TableNodeLineEdit.instance()
+    var lineEditMax = TableNodeLineEdit.instance()
+    var lineEditValue = TableNodeLineEdit.instance()
+    var buttonDelete = TableNodeButton.instance()
     lineEditNo.text = "1"
     lineEditNo.editable = false
 
-    lineEditMin.connect("change_value", "_on_table_node_line_edit_change_value")
-    lineEditMax.connect("change_value", "_on_table_node_line_edit_change_value")
-    lineEditValue.connect("change_value", "_on_table_node_line_edit_change_value")
+    lineEditMin.connect("change_value", self, "_on_table_node_line_edit_change_value")
+    lineEditMax.connect("change_value", self, "_on_table_node_line_edit_change_value")
+    lineEditValue.connect("change_value", self, "_on_table_node_line_edit_change_value")
 
-    buttonDelete.connect("table_node_button_pressed", "_on_button_delete_pressed")
+    buttonDelete.connect("table_node_button_pressed", self, "_on_button_delete_pressed")
     gridContainer.add_child(lineEditNo)
     gridContainer.add_child(lineEditMin)
     gridContainer.add_child(lineEditMax)
