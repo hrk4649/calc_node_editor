@@ -6,3 +6,5 @@
 margin_right = 58.0
 margin_bottom = 24.0
 script = ExtResource( 1 )
+
+[connection signal="text_changed" from="." to="." method="_on_text_changed"]
