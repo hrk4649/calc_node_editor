@@ -32,8 +32,9 @@ text = "Name"
 
 [node name="LineEditName" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
 margin_left = 42.0
-margin_right = 100.0
+margin_right = 121.0
 margin_bottom = 24.0
+size_flags_horizontal = 3
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 28.0
