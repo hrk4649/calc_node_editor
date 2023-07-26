@@ -247,6 +247,7 @@ func load_file(path):
     var result = JSON.parse(content)
     nodes = result.result
     initNodeUIs()
+    yield(get_tree(), "idle_frame")
     arrange_nodes()
 
 func initNodeUIs():
@@ -351,7 +352,6 @@ func get_highest_layer(id_array, layers):
     return highest_layer
 
 func arrange_nodes():
-    pass
     var layers = []
     var loop_count = 0
     var max_loop_count = nodes.size()
@@ -374,16 +374,34 @@ func arrange_nodes():
                     add_node_layer(node, layers, highest_layer + 1)
     var count2 = count_node_in_layers(layers)
     var origin = Vector2.ZERO
-    var grid_size = Vector2(160,160)
+    var grid_size = get_grid_size()
     if count2 == nodes.size():
         for idx1 in range(0, layers.size()):
             var layer = layers[idx1]
             for idx2 in range(0, layer.size()):
                 var node = layer[idx2]
                 var node_ui = find_node_ui(node.id)
-                var pos = origin + Vector2(grid_size.x * idx1, grid_size.y * idx2)
+                var pos_x = grid_size.x * idx1 + (grid_size.x - node_ui.rect_size.x) / 2.0
+                var pos_y = grid_size.y * idx2 + (grid_size.y - node_ui.rect_size.y) / 2.0
+                var pos = origin + Vector2(pos_x, pos_y)
                 node_ui.offset = pos
-                graphEdit.add_child(node_ui)
+
+func get_grid_size():
+    var max_size = Vector2(0,0)
+    for node in nodes:
+        var node_ui = find_node_ui(node.id)
+        var ui_rect_size = node_ui.rect_size
+        if ui_rect_size.x > max_size.x:
+            max_size.x = ui_rect_size.x
+        if ui_rect_size.y > max_size.y:
+            max_size.y = ui_rect_size.y
+    # widen for margin
+    # max_size = max_size * 1.2
+    var base_length = 160
+    var num_grid_x = ceil(max_size.x / base_length)
+    var num_grid_y = ceil(max_size.y / base_length)
+    var result = Vector2(base_length * num_grid_x,base_length * num_grid_y)
+    return result
 
 func reset_data():
     nodes = []
