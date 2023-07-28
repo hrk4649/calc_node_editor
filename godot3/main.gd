@@ -20,6 +20,8 @@ onready var graphEdit = $HBoxContainer/GraphEdit
 onready var fileDialog = $FileDialog
 onready var exportDialog = $ExportDialog
 onready var textEditExport = $ExportDialog/TextEditExport
+onready var importDialog = $ImportDialog
+onready var textEditImport = $ImportDialog/TextEditImport
 
 var nodes = []
 
@@ -247,6 +249,9 @@ func load_file(path):
     var content = file.get_as_text()
     print("load_file:content:%s" % content)
     file.close()
+    load_json(content)
+
+func load_json(content):
     var result = JSON.parse(content)
     nodes = result.result
     initNodeUIs()
@@ -753,7 +758,6 @@ func _on_button_arrange_nodes_pressed():
     graphEdit_arrange_nodes()
 
 func _on_button_export_pressed():
-    pass # Replace with function body.
     exportDialog.rect_size = self.rect_size * 0.8
     exportDialog.rect_position = self.rect_size * 0.5 - exportDialog.rect_size * 0.5
     var content = JSON.print(nodes)
@@ -762,3 +766,13 @@ func _on_button_export_pressed():
     else:
         textEditExport.text = ""
     exportDialog.show()
+
+func _on_button_import_pressed():
+    importDialog.rect_size = self.rect_size * 0.8
+    importDialog.rect_position = self.rect_size * 0.5 - importDialog.rect_size * 0.5
+    textEditImport.text = ""
+    importDialog.show()
+
+func _on_import_dialog_confirmed():
+    var content = textEditImport.text
+    load_json(content)

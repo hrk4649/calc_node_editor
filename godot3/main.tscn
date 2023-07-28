@@ -161,6 +161,18 @@ margin_bottom = 130.0
 readonly = true
 wrap_enabled = true
 
+[node name="ImportDialog" type="ConfirmationDialog" parent="."]
+margin_right = 200.0
+margin_bottom = 101.0
+window_title = "Import data"
+
+[node name="TextEditImport" type="TextEdit" parent="ImportDialog"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 192.0
+margin_bottom = 65.0
+wrap_enabled = true
+
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonValueNode" to="." method="_on_button_value_node_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonAddOpNode" to="." method="_on_button_add_op_node_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonSubOpNode" to="." method="_on_button_sub_op_node_pressed"]
@@ -177,6 +189,8 @@ wrap_enabled = true
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonSave" to="." method="_on_button_save_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonLoad" to="." method="_on_button_load_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonExport" to="." method="_on_button_export_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonImport" to="." method="_on_button_import_pressed"]
 [connection signal="connection_request" from="HBoxContainer/GraphEdit" to="." method="_on_graph_edit_connection_request"]
 [connection signal="disconnection_request" from="HBoxContainer/GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="confirmed" from="ImportDialog" to="." method="_on_import_dialog_confirmed"]
