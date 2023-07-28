@@ -15,7 +15,10 @@ func set_node_type(value):
     pass
 
 func set_value(value):
-    lineEditValue.text = str(value)
+    if value != null:
+        lineEditValue.text = str(value)
+    else:
+        lineEditValue.clear()
 
 func set_node_name(value):
     lineEditName.text = value
