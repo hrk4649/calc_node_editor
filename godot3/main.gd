@@ -719,18 +719,8 @@ func _on_graph_edit_disconnection_request(from_node, from_port, to_node, to_port
     calculate_nodes()
     reflect_values()
 
-func _on_button_list_pressed():
-    print("_on_button_list_pressed()")
-#	for child in graphEdit.get_children():
-#		print("GraphNode:%s %s" % [child, child.get_name()])
-    for node in nodes:
-        print("node:%s" % node)
-#	for dict in graphEdit.get_connection_list():
-#		print("connection:%s" % [dict])
-
 func _on_button_new_pressed():
     reset_data()
-
 
 func _on_button_save_pressed():
     pass # Replace with function body.
