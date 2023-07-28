@@ -12,121 +12,121 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
-margin_right = 106.0
+margin_right = 123.0
 margin_bottom = 600.0
 
 [node name="ButtonValueNode" type="Button" parent="HBoxContainer/VBoxContainer"]
-margin_right = 106.0
-margin_bottom = 20.0
+margin_right = 123.0
+margin_bottom = 30.0
 text = "Value"
 
 [node name="ButtonAddOpNode" type="Button" parent="HBoxContainer/VBoxContainer"]
-margin_top = 24.0
-margin_right = 106.0
-margin_bottom = 44.0
+margin_top = 34.0
+margin_right = 123.0
+margin_bottom = 64.0
 text = "A + B"
 
 [node name="ButtonSubOpNode" type="Button" parent="HBoxContainer/VBoxContainer"]
-margin_top = 48.0
-margin_right = 106.0
-margin_bottom = 68.0
+margin_top = 68.0
+margin_right = 123.0
+margin_bottom = 98.0
 text = "A - B"
 
 [node name="ButtonMulOpNode" type="Button" parent="HBoxContainer/VBoxContainer"]
-margin_top = 72.0
-margin_right = 106.0
-margin_bottom = 92.0
+margin_top = 102.0
+margin_right = 123.0
+margin_bottom = 132.0
 text = "A x B"
 
 [node name="ButtonDivOpNode" type="Button" parent="HBoxContainer/VBoxContainer"]
-margin_top = 96.0
-margin_right = 106.0
-margin_bottom = 116.0
+margin_top = 136.0
+margin_right = 123.0
+margin_bottom = 166.0
 text = "A / B"
 
 [node name="ButtonSumOpNode" type="Button" parent="HBoxContainer/VBoxContainer"]
-margin_top = 120.0
-margin_right = 106.0
-margin_bottom = 140.0
+margin_top = 170.0
+margin_right = 123.0
+margin_bottom = 200.0
 text = "SUM"
 
 [node name="ButtonProdOpNode" type="Button" parent="HBoxContainer/VBoxContainer"]
-margin_top = 144.0
-margin_right = 106.0
-margin_bottom = 164.0
+margin_top = 204.0
+margin_right = 123.0
+margin_bottom = 234.0
 text = "PROD"
 
 [node name="ButtonTableNode" type="Button" parent="HBoxContainer/VBoxContainer"]
-margin_top = 168.0
-margin_right = 106.0
-margin_bottom = 188.0
+margin_top = 238.0
+margin_right = 123.0
+margin_bottom = 268.0
 text = "Table"
 
 [node name="ButtonFuncNode" type="Button" parent="HBoxContainer/VBoxContainer"]
-margin_top = 192.0
-margin_right = 106.0
-margin_bottom = 212.0
+margin_top = 272.0
+margin_right = 123.0
+margin_bottom = 302.0
 text = "Function"
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
-margin_top = 216.0
-margin_right = 106.0
-margin_bottom = 216.0
+margin_top = 306.0
+margin_right = 123.0
+margin_bottom = 306.0
 
 [node name="ButtonDelete" type="Button" parent="HBoxContainer/VBoxContainer"]
-margin_top = 220.0
-margin_right = 106.0
-margin_bottom = 240.0
+margin_top = 310.0
+margin_right = 123.0
+margin_bottom = 340.0
 text = "Delete Node"
 
 [node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
-margin_top = 244.0
-margin_right = 106.0
-margin_bottom = 244.0
+margin_top = 344.0
+margin_right = 123.0
+margin_bottom = 344.0
 
 [node name="ButtonArrangeNodes" type="Button" parent="HBoxContainer/VBoxContainer"]
-margin_top = 248.0
-margin_right = 106.0
-margin_bottom = 268.0
+margin_top = 348.0
+margin_right = 123.0
+margin_bottom = 378.0
 text = "Arrange Nodes"
 
 [node name="MarginContainer4" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
-margin_top = 272.0
-margin_right = 106.0
-margin_bottom = 272.0
+margin_top = 382.0
+margin_right = 123.0
+margin_bottom = 382.0
 
 [node name="ButtonNew" type="Button" parent="HBoxContainer/VBoxContainer"]
-margin_top = 276.0
-margin_right = 106.0
-margin_bottom = 296.0
+margin_top = 386.0
+margin_right = 123.0
+margin_bottom = 416.0
 text = "New Graph"
 
 [node name="ButtonSave" type="Button" parent="HBoxContainer/VBoxContainer"]
-margin_top = 300.0
-margin_right = 106.0
-margin_bottom = 320.0
+margin_top = 420.0
+margin_right = 123.0
+margin_bottom = 450.0
 text = "Save"
 
 [node name="ButtonLoad" type="Button" parent="HBoxContainer/VBoxContainer"]
-margin_top = 324.0
-margin_right = 106.0
-margin_bottom = 344.0
+margin_top = 454.0
+margin_right = 123.0
+margin_bottom = 484.0
 text = "Load"
 
 [node name="ButtonExport" type="Button" parent="HBoxContainer/VBoxContainer"]
-margin_top = 348.0
-margin_right = 106.0
-margin_bottom = 368.0
+margin_top = 488.0
+margin_right = 123.0
+margin_bottom = 518.0
 text = "Export"
 
 [node name="ButtonImport" type="Button" parent="HBoxContainer/VBoxContainer"]
-margin_top = 372.0
-margin_right = 106.0
-margin_bottom = 392.0
+margin_top = 522.0
+margin_right = 123.0
+margin_bottom = 552.0
 text = "Import"
 
 [node name="GraphEdit" type="GraphEdit" parent="HBoxContainer"]
-margin_left = 110.0
+margin_left = 127.0
 margin_right = 1024.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
@@ -146,7 +146,7 @@ window_title = "Export data"
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 205.0
-margin_bottom = 130.0
+margin_bottom = 120.0
 readonly = true
 wrap_enabled = true
 
@@ -159,7 +159,7 @@ window_title = "Import data"
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 192.0
-margin_bottom = 65.0
+margin_bottom = 55.0
 wrap_enabled = true
 
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonValueNode" to="." method="_on_button_value_node_pressed"]
