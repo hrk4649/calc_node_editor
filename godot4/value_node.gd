@@ -30,4 +30,3 @@ func _on_line_edit_name_text_changed(new_text):
 func _on_line_edit_value_text_changed(new_text):
 	emit_signal("change_value", self.name, new_text)
 
-
