@@ -68,10 +68,6 @@ text = "Delete"
 [node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="ButtonList" type="Button" parent="HBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "GraphEditInfo"
-
 [node name="MarginContainer3" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
@@ -96,6 +92,14 @@ layout_mode = 2
 text = "Load
 "
 
+[node name="ButtonExport" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Export"
+
+[node name="ButtonImport" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Import"
+
 [node name="GraphEdit" type="GraphEdit" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -104,6 +108,24 @@ right_disconnects = true
 [node name="FileDialog" type="FileDialog" parent="."]
 size = Vector2i(452, 162)
 access = 2
+
+[node name="ExportDialog" type="AcceptDialog" parent="."]
+title = "Export data"
+
+[node name="TextEditExport" type="TextEdit" parent="ExportDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 92.0
+offset_bottom = 51.0
+
+[node name="ImportDialog" type="AcceptDialog" parent="."]
+title = "Import data"
+
+[node name="TextEditImport" type="TextEdit" parent="ImportDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 92.0
+offset_bottom = 51.0
 
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonValueNode" to="." method="_on_button_value_node_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonAddOpNode" to="." method="_on_button_add_op_node_pressed"]
@@ -115,11 +137,13 @@ access = 2
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonTableNode" to="." method="_on_button_table_node_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonFuncNode" to="." method="_on_button_func_node_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonDelete" to="." method="_on_button_delete_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonList" to="." method="_on_button_list_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonArrangeNodes" to="." method="_on_button_arrange_nodes_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonNew" to="." method="_on_button_new_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonSave" to="." method="_on_button_save_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonLoad" to="." method="_on_button_load_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonExport" to="." method="_on_button_export_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonImport" to="." method="_on_button_import_pressed"]
 [connection signal="connection_request" from="HBoxContainer/GraphEdit" to="." method="_on_graph_edit_connection_request"]
 [connection signal="disconnection_request" from="HBoxContainer/GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="confirmed" from="ImportDialog" to="." method="_on_import_dialog_confirmed"]

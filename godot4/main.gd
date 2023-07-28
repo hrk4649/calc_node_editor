@@ -18,6 +18,10 @@ const FUNC = Constraints.FUNC
 
 @onready var graphEdit = $HBoxContainer/GraphEdit
 @onready var fileDialog = $FileDialog
+@onready var exportDialog = $ExportDialog
+@onready var textEditExport = $ExportDialog/TextEditExport
+@onready var importDialog = $ImportDialog
+@onready var textEditImport = $ImportDialog/TextEditImport
 
 var nodes = []
 
@@ -230,6 +234,9 @@ func load_file(path):
 	reset_data()
 	var file = FileAccess.open(path, FileAccess.READ)
 	var content = file.get_as_text()
+	load_json(content)
+
+func load_json(content):
 	nodes = JSON.parse_string(content)
 	initNodeUIs()
 
@@ -605,18 +612,8 @@ func _on_graph_edit_disconnection_request(from_node, from_port, to_node, to_port
 	calculate_nodes()
 	reflect_values()
 
-func _on_button_list_pressed():
-	print("_on_button_list_pressed()")
-#	for child in graphEdit.get_children():
-#		print("GraphNode:%s %s" % [child, child.get_name()])
-	for node in nodes:
-		print("node:%s" % node)
-#	for dict in graphEdit.get_connection_list():
-#		print("connection:%s" % [dict])
-
 func _on_button_new_pressed():
 	reset_data()
-
 
 func _on_button_save_pressed():
 	pass # Replace with function body.
@@ -643,4 +640,22 @@ func _on_file_dialog_file_selected(path):
 func _on_button_arrange_nodes_pressed():
 	graphEdit_arrange_nodes()
 
+func _on_button_export_pressed():
+	exportDialog.size = self.size * 0.8
+	exportDialog.position = self.size * 0.5 - exportDialog.size * 0.5
+	var content = JSON.stringify(nodes)
+	if content != null:
+		textEditExport.text = content
+	else:
+		textEditExport.text = ""
+	exportDialog.show()
 
+func _on_button_import_pressed():
+	importDialog.size = self.size * 0.8
+	importDialog.position = self.size * 0.5 - importDialog.size * 0.5
+	textEditImport.text = ""
+	importDialog.show()
+
+func _on_import_dialog_confirmed():
+	var content = textEditImport.text
+	load_json(content)
