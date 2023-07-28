@@ -10,6 +10,8 @@ onready var lineEditName = $VBoxContainer/HBoxContainer/LineEditName
 onready var buttonAddRow = $VBoxContainer/HBoxContainer2/ButtonAddRow
 onready var gridContainer = $VBoxContainer/GridContainer
 
+var skip_refresh_row = false
+
 var node_type setget set_node_type, get_node_type
 
 func get_node_type():
@@ -21,9 +23,8 @@ func set_node_type(value):
 func set_node_name(value):
     lineEditName.text = value
 
-func set_row(row):
-    while get_row_count() > 1:
-        delete_row(1)
+func init_row(row):
+    skip_refresh_row = true
     for no in range(0, row.size()):
         add_row()
     for no in range (0, row.size()):
@@ -34,13 +35,19 @@ func set_row(row):
         var lineEditValue = gridContainer.get_child(no_idx + 3)	
         var r = row[no]
         
-        lineEditNo.text = str(r.no)
-        if r.min != null:
-            lineEditMin.text = str(r.min)
-        if r.max != null:
-            lineEditMax.text = str(r.max)
-        if r.value != null:
-            lineEditValue.text = str(r.value)
+        var values = [r.no, r.min, r.max, r.value]
+        var uis = [lineEditNo, lineEditMin, lineEditMax, lineEditValue]
+        
+        for idx in range(0, values.size()):
+            var value = values[idx]
+            var ui = uis[idx]
+            if value != null:
+                var str_value = str(value)
+                if ui.text != str_value:
+                    ui.text = str_value
+            else:
+                ui.clear()
+    skip_refresh_row = false
 
 func add_row():
     var lineEditNo = TableNodeLineEdit.instance()
@@ -112,7 +119,8 @@ func refresh_row():
     emit_signal("change_table_row", self.name, row_ary)
 
 func _on_table_node_line_edit_change_value():
-    refresh_row()
+    if !skip_refresh_row:
+        refresh_row()
 
 func _on_button_delete_pressed(button):
     var row_number = get_row_number_of(button)

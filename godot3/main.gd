@@ -230,8 +230,6 @@ func reflect_values():
             continue
         if !is_constant(node) && child.node_type == VALUE:
             child.set_value(node.value)
-        if node.has("row") && child.node_type == TABLE:
-            child.set_row(node.row)
 
 func save_file(path):
     var file = File.new()
@@ -311,6 +309,9 @@ func initNodeUIs():
         # set value
         if is_constant(node):
             node_ui.set_value(node.value)
+        # set row
+        if node.type == TABLE && node.has("row"):
+            node_ui.init_row(node.row)
 
     reflect_values()
 
