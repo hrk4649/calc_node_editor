@@ -20,6 +20,10 @@ config/icon="res://icon.svg"
 Uuid="*res://uuid.gd"
 Utils="*res://utils.gd"
 
+[gui]
+
+theme/custom="res://default_theme.tres"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

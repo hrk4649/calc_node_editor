@@ -117,6 +117,7 @@ offset_left = 8.0
 offset_top = 8.0
 offset_right = 92.0
 offset_bottom = 51.0
+wrap_mode = 1
 
 [node name="ImportDialog" type="AcceptDialog" parent="."]
 title = "Import data"
@@ -126,6 +127,7 @@ offset_left = 8.0
 offset_top = 8.0
 offset_right = 92.0
 offset_bottom = 51.0
+wrap_mode = 1
 
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonValueNode" to="." method="_on_button_value_node_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonAddOpNode" to="." method="_on_button_add_op_node_pressed"]
