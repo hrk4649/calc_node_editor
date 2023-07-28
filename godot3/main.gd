@@ -158,8 +158,11 @@ func process_node_table(node):
     
     # find row
     for row in node.row:
-        var pass_min = row.min == null || input_value >= row.min
-        var pass_max = row.max == null || input_value < row.max
+        print("typeof(row.min):%s" % typeof(row.min))
+        print("typeof(input_value):%s" % typeof(input_value))
+        print("typeof(string):%s" % typeof("abc"))
+        var pass_min = (row.min == null || input_value >= float(row.min))
+        var pass_max = (row.max == null || input_value < float(row.max))
         
         if pass_min && pass_max:
             node.value = row.value

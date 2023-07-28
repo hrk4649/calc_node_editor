@@ -35,9 +35,12 @@ func set_row(row):
         var r = row[no]
         
         lineEditNo.text = str(r.no)
-        lineEditMin.text = str(r.min)
-        lineEditMax.text = str(r.max)
-        lineEditValue.text = str(r.value)
+        if r.min != null:
+            lineEditMin.text = str(r.min)
+        if r.max != null:
+            lineEditMax.text = str(r.max)
+        if r.value != null:
+            lineEditValue.text = str(r.value)
 
 func add_row():
     var lineEditNo = TableNodeLineEdit.instance()
@@ -121,7 +124,8 @@ func _on_button_add_row_pressed():
     reset_no_columns()
 
 func _on_resize_request(new_minsize):
-    self.size = new_minsize
+    self.rect_size = new_minsize
 
 func _on_line_edit_name_text_changed(_new_text):
     emit_signal("change_name", self.name, lineEditName.text)
+

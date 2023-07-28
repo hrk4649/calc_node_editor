@@ -6,6 +6,7 @@
 margin_right = 32.0
 margin_bottom = 30.0
 title = "Table"
+resizable = true
 slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color( 1, 1, 1, 1 )
@@ -79,3 +80,6 @@ text = "Value"
 margin_left = 121.0
 margin_right = 121.0
 margin_bottom = 14.0
+
+[connection signal="resize_request" from="." to="." method="_on_resize_request"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/ButtonAddRow" to="." method="_on_button_add_row_pressed"]
