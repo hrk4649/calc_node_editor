@@ -18,6 +18,8 @@ const FUNC = Constraints.FUNC
 
 onready var graphEdit = $HBoxContainer/GraphEdit
 onready var fileDialog = $FileDialog
+onready var exportDialog = $ExportDialog
+onready var textEditExport = $ExportDialog/TextEditExport
 
 var nodes = []
 
@@ -750,4 +752,13 @@ func _on_file_dialog_file_selected(path):
 func _on_button_arrange_nodes_pressed():
     graphEdit_arrange_nodes()
 
-
+func _on_button_export_pressed():
+    pass # Replace with function body.
+    exportDialog.rect_size = self.rect_size * 0.8
+    exportDialog.rect_position = self.rect_size * 0.5 - exportDialog.rect_size * 0.5
+    var content = JSON.print(nodes)
+    if content != null:
+        textEditExport.text = content
+    else:
+        textEditExport.text = ""
+    exportDialog.show()

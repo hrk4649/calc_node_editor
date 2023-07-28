@@ -124,6 +124,18 @@ margin_right = 106.0
 margin_bottom = 372.0
 text = "Load"
 
+[node name="ButtonExport" type="Button" parent="HBoxContainer/VBoxContainer"]
+margin_top = 376.0
+margin_right = 106.0
+margin_bottom = 396.0
+text = "Export"
+
+[node name="ButtonImport" type="Button" parent="HBoxContainer/VBoxContainer"]
+margin_top = 400.0
+margin_right = 106.0
+margin_bottom = 420.0
+text = "Import"
+
 [node name="GraphEdit" type="GraphEdit" parent="HBoxContainer"]
 margin_left = 110.0
 margin_right = 1024.0
@@ -135,6 +147,19 @@ right_disconnects = true
 margin_right = 315.0
 margin_bottom = 130.0
 access = 2
+
+[node name="ExportDialog" type="ConfirmationDialog" parent="."]
+margin_right = 213.0
+margin_bottom = 166.0
+window_title = "Export data"
+
+[node name="TextEditExport" type="TextEdit" parent="ExportDialog"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 205.0
+margin_bottom = 130.0
+readonly = true
+wrap_enabled = true
 
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonValueNode" to="." method="_on_button_value_node_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonAddOpNode" to="." method="_on_button_add_op_node_pressed"]
@@ -151,6 +176,7 @@ access = 2
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonNew" to="." method="_on_button_new_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonSave" to="." method="_on_button_save_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonLoad" to="." method="_on_button_load_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonExport" to="." method="_on_button_export_pressed"]
 [connection signal="connection_request" from="HBoxContainer/GraphEdit" to="." method="_on_graph_edit_connection_request"]
 [connection signal="disconnection_request" from="HBoxContainer/GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
