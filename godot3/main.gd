@@ -217,8 +217,9 @@ func calculate_nodes():
             node.value = null
 
     var loopCount = 0
+    var max_loop_count = nodes.size()
     var processed = []
-    while processed.size() < nodes.size() && loopCount < 10:
+    while processed.size() < nodes.size() && loopCount < max_loop_count:
         loopCount = loopCount + 1
         for node in nodes:
             if node in processed:
