@@ -16,12 +16,15 @@ const PROD = Constraints.PROD
 const TABLE = Constraints.TABLE
 const FUNC = Constraints.FUNC
 
-@onready var graphEdit = $HBoxContainer/GraphEdit
+@onready var graphEdit = $VBoxContainer/HBoxContainer/GraphEdit
 @onready var fileDialog = $FileDialog
 @onready var exportDialog = $ExportDialog
 @onready var textEditExport = $ExportDialog/TextEditExport
 @onready var importDialog = $ImportDialog
 @onready var textEditImport = $ImportDialog/TextEditImport
+@onready var popupMenuFile = $VBoxContainer/MenuBar/File
+@onready var popupMenuEdit = $VBoxContainer/MenuBar/Edit
+@onready var popupMenuHelp = $VBoxContainer/MenuBar/Help
 
 var nodes = []
 
@@ -659,3 +662,26 @@ func _on_button_import_pressed():
 func _on_import_dialog_confirmed():
 	var content = textEditImport.text
 	load_json(content)
+
+func _on_file_id_pressed(id):
+	var idx = popupMenuFile.get_item_index(id)
+	var text = popupMenuFile.get_item_text(idx)
+	match text:
+		"New":
+			_on_button_new_pressed()
+		"Save":
+			_on_button_save_pressed()
+		"Load":
+			_on_button_load_pressed()
+		"Export":
+			_on_button_export_pressed()
+		"Import":
+			_on_button_import_pressed()
+		_:
+			print("unexpected menu item:%s" % text)
+
+func _on_edit_id_pressed(id):
+	pass # Replace with function body.
+
+func _on_help_index_pressed(index):
+	pass # Replace with function body.

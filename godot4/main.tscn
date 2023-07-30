@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ycdy6")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,91 +19,148 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+[node name="MenuBar" type="MenuBar" parent="VBoxContainer"]
+layout_mode = 2
+flat = true
+
+[node name="File" type="PopupMenu" parent="VBoxContainer/MenuBar"]
+item_count = 5
+item_0/text = "New"
+item_0/id = 100
+item_1/text = "Save"
+item_1/id = 101
+item_2/text = "Load"
+item_2/id = 102
+item_3/text = "Export"
+item_3/id = 103
+item_4/text = "Import"
+item_4/id = 104
+
+[node name="Edit" type="PopupMenu" parent="VBoxContainer/MenuBar"]
+item_count = 13
+item_0/text = "Delete"
+item_0/id = 200
+item_1/text = ""
+item_1/id = 205
+item_1/separator = true
+item_2/text = "Value"
+item_2/id = 210
+item_3/text = "A + B"
+item_3/id = 215
+item_4/text = "A - B"
+item_4/id = 220
+item_5/text = "A x B"
+item_5/id = 225
+item_6/text = "A / B"
+item_6/id = 230
+item_7/text = "Σ"
+item_7/id = 235
+item_8/text = "Π"
+item_8/id = 240
+item_9/text = "Table"
+item_9/id = 245
+item_10/text = "Function"
+item_10/id = 250
+item_11/text = ""
+item_11/id = 255
+item_11/separator = true
+item_12/text = "Arrnage Nodes"
+item_12/id = 260
+
+[node name="Help" type="PopupMenu" parent="VBoxContainer/MenuBar"]
+item_count = 1
+item_0/text = "About"
+item_0/id = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="ButtonValueNode" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonValueNode" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Value"
 
-[node name="ButtonAddOpNode" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="ButtonAddOpNode" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "A + B"
 
-[node name="ButtonSubOpNode" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="ButtonSubOpNode" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "A - B"
 
-[node name="ButtonMulOpNode" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="ButtonMulOpNode" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "A x B"
 
-[node name="ButtonDivOpNode" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="ButtonDivOpNode" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "A / B"
 
-[node name="ButtonSumOpNode" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="ButtonSumOpNode" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Σ"
 
-[node name="ButtonProdOpNode" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="ButtonProdOpNode" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Π"
 
-[node name="ButtonTableNode" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="ButtonTableNode" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Table"
 
-[node name="ButtonFuncNode" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="ButtonFuncNode" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Function"
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="ButtonDelete" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="ButtonDelete" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Delete"
 
-[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="MarginContainer3" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="ButtonArrangeNodes" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="ButtonArrangeNodes" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Arrange Nodes"
 
-[node name="MarginContainer4" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
+[node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="ButtonNew" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="ButtonNew" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "New Graph"
 
-[node name="ButtonSave" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="ButtonSave" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Save
 "
 
-[node name="ButtonLoad" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="ButtonLoad" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Load
 "
 
-[node name="ButtonExport" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="ButtonExport" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Export"
 
-[node name="ButtonImport" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="ButtonImport" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Import"
 
-[node name="GraphEdit" type="GraphEdit" parent="HBoxContainer"]
+[node name="GraphEdit" type="GraphEdit" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 right_disconnects = true
+scroll_offset = Vector2(0, -76)
 
 [node name="FileDialog" type="FileDialog" parent="."]
 size = Vector2i(452, 162)
@@ -129,23 +186,26 @@ offset_right = 92.0
 offset_bottom = 51.0
 wrap_mode = 1
 
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonValueNode" to="." method="_on_button_value_node_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonAddOpNode" to="." method="_on_button_add_op_node_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonSubOpNode" to="." method="_on_button_sub_op_node_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonMulOpNode" to="." method="_on_button_mul_op_node_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonDivOpNode" to="." method="_on_button_div_op_node_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonSumOpNode" to="." method="_on_button_sum_op_node_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonProdOpNode" to="." method="_on_button_prod_op_node_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonTableNode" to="." method="_on_button_table_node_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonFuncNode" to="." method="_on_button_func_node_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonDelete" to="." method="_on_button_delete_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonArrangeNodes" to="." method="_on_button_arrange_nodes_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonNew" to="." method="_on_button_new_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonSave" to="." method="_on_button_save_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonLoad" to="." method="_on_button_load_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonExport" to="." method="_on_button_export_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonImport" to="." method="_on_button_import_pressed"]
-[connection signal="connection_request" from="HBoxContainer/GraphEdit" to="." method="_on_graph_edit_connection_request"]
-[connection signal="disconnection_request" from="HBoxContainer/GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
+[connection signal="id_pressed" from="VBoxContainer/MenuBar/File" to="." method="_on_file_id_pressed"]
+[connection signal="id_pressed" from="VBoxContainer/MenuBar/Edit" to="." method="_on_edit_id_pressed"]
+[connection signal="index_pressed" from="VBoxContainer/MenuBar/Help" to="." method="_on_help_index_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/ButtonValueNode" to="." method="_on_button_value_node_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/ButtonAddOpNode" to="." method="_on_button_add_op_node_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/ButtonSubOpNode" to="." method="_on_button_sub_op_node_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/ButtonMulOpNode" to="." method="_on_button_mul_op_node_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/ButtonDivOpNode" to="." method="_on_button_div_op_node_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/ButtonSumOpNode" to="." method="_on_button_sum_op_node_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/ButtonProdOpNode" to="." method="_on_button_prod_op_node_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/ButtonTableNode" to="." method="_on_button_table_node_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/ButtonFuncNode" to="." method="_on_button_func_node_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/ButtonDelete" to="." method="_on_button_delete_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/ButtonArrangeNodes" to="." method="_on_button_arrange_nodes_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/ButtonNew" to="." method="_on_button_new_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/ButtonSave" to="." method="_on_button_save_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/ButtonLoad" to="." method="_on_button_load_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/ButtonExport" to="." method="_on_button_export_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/ButtonImport" to="." method="_on_button_import_pressed"]
+[connection signal="connection_request" from="VBoxContainer/HBoxContainer/GraphEdit" to="." method="_on_graph_edit_connection_request"]
+[connection signal="disconnection_request" from="VBoxContainer/HBoxContainer/GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
 [connection signal="confirmed" from="ImportDialog" to="." method="_on_import_dialog_confirmed"]
