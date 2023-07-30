@@ -6,6 +6,8 @@ var NArrOpNode = preload("res://n_ary_op_node.tscn")
 var TableNode = preload("res://table_node.tscn")
 var FuncNode = preload("res://func_node.tscn")
 
+var AboutResource = preload("res://about_resource.tres")
+
 const VALUE = Constraints.VALUE
 const ADD = Constraints.ADD
 const SUB = Constraints.SUB
@@ -16,21 +18,31 @@ const PROD = Constraints.PROD
 const TABLE = Constraints.TABLE
 const FUNC = Constraints.FUNC
 
-onready var graphEdit = $HBoxContainer/GraphEdit
+onready var graphEdit = $VBoxContainer/HBoxContainer/GraphEdit
 onready var fileDialog = $FileDialog
 onready var exportDialog = $ExportDialog
 onready var textEditExport = $ExportDialog/TextEditExport
 onready var importDialog = $ImportDialog
 onready var textEditImport = $ImportDialog/TextEditImport
+onready var aboutDialog = $AboutDialog
+onready var textEditAbout = $AboutDialog/TextEditAbout
+
+onready var popupMenuFile = $VBoxContainer/HBoxContainer2/MenuButtonFile
+onready var popupMenuEdit = $VBoxContainer/HBoxContainer2/MenuButtonEdit
+onready var popupMenuHelp = $VBoxContainer/HBoxContainer2/MenuButtonHelp
 
 var nodes = []
 
 func _ready():
-    pass
+    initMenuButton()
+
+func initMenuButton():
+    popupMenuFile.get_popup().connect("index_pressed", self, "_on_file_index_pressed")
+    popupMenuEdit.get_popup().connect("index_pressed", self, "_on_edit_index_pressed")
+    popupMenuHelp.get_popup().connect("index_pressed", self, "_on_help_index_pressed")
 
 func generate_id():
     return Uuid.v4()
-
 
 func find_my_node(id):
     for node in nodes:
@@ -767,3 +779,61 @@ func _on_button_import_pressed():
 func _on_import_dialog_confirmed():
     var content = textEditImport.text
     load_json(content)
+
+func _on_button_about_pressed():
+    aboutDialog.rect_size = self.rect_size * 0.8
+    aboutDialog.rect_position = self.rect_size * 0.5 - aboutDialog.rect_size * 0.5
+    textEditAbout.text = AboutResource.text
+    aboutDialog.show()	
+
+func _on_file_index_pressed(idx):
+    var text = popupMenuFile.get_popup().get_item_text(idx)
+    match text:
+        "New":
+            _on_button_new_pressed()
+        "Save":
+            _on_button_save_pressed()
+        "Load":
+            _on_button_load_pressed()
+        "Export":
+            _on_button_export_pressed()
+        "Import":
+            _on_button_import_pressed()
+        _:
+            print("unexpected menu item:%s" % text)
+
+func _on_edit_index_pressed(idx):
+    var text = popupMenuEdit.get_popup().get_item_text(idx)
+    match text:
+        "Delete":
+            _on_button_delete_pressed()
+        "Value":
+            _on_button_value_node_pressed()
+        "A + B":
+            _on_button_add_op_node_pressed()
+        "A - B":
+            _on_button_sub_op_node_pressed()
+        "A x B":
+            _on_button_mul_op_node_pressed()
+        "A / B":
+            _on_button_div_op_node_pressed()
+        "SUM":
+            _on_button_sum_op_node_pressed()
+        "PROD":
+            _on_button_prod_op_node_pressed()
+        "Table":
+            _on_button_table_node_pressed()
+        "Function":
+            _on_button_func_node_pressed()
+        "Arrnage Nodes":
+            _on_button_arrange_nodes_pressed()
+        _:
+            print("unexpected menu item:%s" % text)
+
+func _on_help_index_pressed(idx):
+    var text = popupMenuHelp.get_popup().get_item_text(idx)
+    match text:
+        "About":
+            _on_button_about_pressed()
+        _:
+            print("unexpected menu item:%s" % text)
