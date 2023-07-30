@@ -681,7 +681,33 @@ func _on_file_id_pressed(id):
 			print("unexpected menu item:%s" % text)
 
 func _on_edit_id_pressed(id):
-	pass # Replace with function body.
+	var idx = popupMenuEdit.get_item_index(id)
+	var text = popupMenuEdit.get_item_text(idx)
+	match text:
+		"Delete":
+			_on_button_delete_pressed()
+		"Value":
+			_on_button_value_node_pressed()
+		"A + B":
+			_on_button_add_op_node_pressed()
+		"A - B":
+			_on_button_sub_op_node_pressed()
+		"A x B":
+			_on_button_mul_op_node_pressed()
+		"A / B":
+			_on_button_div_op_node_pressed()
+		"Σ":
+			_on_button_sum_op_node_pressed()
+		"Π":
+			_on_button_prod_op_node_pressed()
+		"Table":
+			_on_button_table_node_pressed()
+		"Function":
+			_on_button_func_node_pressed()
+		"Arrnage Nodes":
+			_on_button_arrange_nodes_pressed()
+		_:
+			print("unexpected menu item:%s" % text)
 
 func _on_help_index_pressed(index):
 	pass # Replace with function body.
