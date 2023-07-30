@@ -1,0 +1,36 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://d02prelhpvoxc"]
+
+[ext_resource type="Script" path="res://about_resource.gd" id="1_43f47"]
+
+[resource]
+script = ExtResource("1_43f47")
+text = "TEST
+TEST
+TEST
+1
+2
+3
+TEST
+TEST
+TEST
+1
+2
+3
+TEST
+TEST
+TEST
+1
+2
+3
+TEST
+TEST
+TEST
+1
+2
+3
+TEST
+TEST
+TEST
+1
+2
+3"

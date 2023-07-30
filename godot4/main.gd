@@ -6,6 +6,8 @@ var NArrOpNode = preload("res://n_ary_op_node.tscn")
 var TableNode = preload("res://table_node.tscn")
 var FuncNode = preload("res://func_node.tscn")
 
+var AboutResource = preload("res://about_resource.tres")
+
 const VALUE = Constraints.VALUE
 const ADD = Constraints.ADD
 const SUB = Constraints.SUB
@@ -17,11 +19,15 @@ const TABLE = Constraints.TABLE
 const FUNC = Constraints.FUNC
 
 @onready var graphEdit = $VBoxContainer/HBoxContainer/GraphEdit
+
 @onready var fileDialog = $FileDialog
 @onready var exportDialog = $ExportDialog
 @onready var textEditExport = $ExportDialog/TextEditExport
 @onready var importDialog = $ImportDialog
 @onready var textEditImport = $ImportDialog/TextEditImport
+@onready var aboutDialog = $AboutDialog
+@onready var textEditAbout = $AboutDialog/TextEditAbout
+
 @onready var popupMenuFile = $VBoxContainer/MenuBar/File
 @onready var popupMenuEdit = $VBoxContainer/MenuBar/Edit
 @onready var popupMenuHelp = $VBoxContainer/MenuBar/Help
@@ -663,6 +669,12 @@ func _on_import_dialog_confirmed():
 	var content = textEditImport.text
 	load_json(content)
 
+func _on_button_about_pressed():
+	aboutDialog.size = self.size * 0.8
+	aboutDialog.position = self.size * 0.5 - aboutDialog.size * 0.5
+	textEditAbout.text = AboutResource.text
+	aboutDialog.show()	
+
 func _on_file_id_pressed(id):
 	var idx = popupMenuFile.get_item_index(id)
 	var text = popupMenuFile.get_item_text(idx)
@@ -709,5 +721,10 @@ func _on_edit_id_pressed(id):
 		_:
 			print("unexpected menu item:%s" % text)
 
-func _on_help_index_pressed(index):
-	pass # Replace with function body.
+func _on_help_index_pressed(idx):
+	var text = popupMenuHelp.get_item_text(idx)
+	match text:
+		"About":
+			_on_button_about_pressed()
+		_:
+			print("unexpected menu item:%s" % text)

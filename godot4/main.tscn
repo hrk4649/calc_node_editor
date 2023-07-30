@@ -160,7 +160,6 @@ text = "Import"
 layout_mode = 2
 size_flags_horizontal = 3
 right_disconnects = true
-scroll_offset = Vector2(0, -76)
 
 [node name="FileDialog" type="FileDialog" parent="."]
 size = Vector2i(452, 162)
@@ -185,6 +184,16 @@ offset_top = 8.0
 offset_right = 92.0
 offset_bottom = 51.0
 wrap_mode = 1
+
+[node name="AboutDialog" type="AcceptDialog" parent="."]
+title = "About"
+
+[node name="TextEditAbout" type="TextEdit" parent="AboutDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 92.0
+offset_bottom = 51.0
+editable = false
 
 [connection signal="id_pressed" from="VBoxContainer/MenuBar/File" to="." method="_on_file_id_pressed"]
 [connection signal="id_pressed" from="VBoxContainer/MenuBar/Edit" to="." method="_on_edit_id_pressed"]
