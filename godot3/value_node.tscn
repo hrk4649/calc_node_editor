@@ -6,6 +6,7 @@
 margin_right = 32.0
 margin_bottom = 30.0
 title = "Value"
+resizable = true
 slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color( 1, 1, 1, 1 )
@@ -31,6 +32,7 @@ text = "Name"
 margin_left = 49.0
 margin_right = 107.0
 margin_bottom = 34.0
+size_flags_horizontal = 3
 
 [node name="LabelValue" type="Label" parent="GridContainer"]
 margin_top = 43.0
@@ -43,6 +45,8 @@ margin_left = 49.0
 margin_top = 38.0
 margin_right = 107.0
 margin_bottom = 72.0
+size_flags_horizontal = 3
 
+[connection signal="resize_request" from="." to="." method="_on_resize_request"]
 [connection signal="text_changed" from="GridContainer/LineEditName" to="." method="_on_line_edit_name_text_changed"]
 [connection signal="text_changed" from="GridContainer/LineEditValue" to="." method="_on_line_edit_value_text_changed"]
