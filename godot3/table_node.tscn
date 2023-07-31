@@ -51,6 +51,7 @@ text = "Add Row"
 margin_top = 72.0
 margin_right = 141.0
 margin_bottom = 96.0
+size_flags_horizontal = 3
 columns = 5
 
 [node name="LabelNo" type="Label" parent="VBoxContainer/GridContainer"]
