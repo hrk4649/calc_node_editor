@@ -4,6 +4,7 @@ var ValueNode = preload("res://value_node.tscn")
 var OpNode = preload("res://op_node.tscn")
 var NArrOpNode = preload("res://n_ary_op_node.tscn")
 var TableNode = preload("res://table_node.tscn")
+var OptionNode = preload("res://option_node.tscn")
 var FuncNode = preload("res://func_node.tscn")
 
 var AboutResource = preload("res://about_resource.tres")
@@ -16,6 +17,7 @@ const DIV = Constraints.DIV
 const SUM = Constraints.SUM
 const PROD = Constraints.PROD
 const TABLE = Constraints.TABLE
+const OPTION = Constraints.OPTION
 const FUNC = Constraints.FUNC
 
 onready var graphEdit = $VBoxContainer/HBoxContainer/GraphEdit
@@ -126,6 +128,8 @@ func process_node(node):
             process_node_n_ary(node)
         TABLE:
             process_node_table(node)
+        OPTION:
+            process_node_option(node)
         FUNC:
             process_node_func(node)
         _:
@@ -181,6 +185,15 @@ func process_node_table(node):
         var pass_max = (row.max == null || input_value < float(row.max))
         
         if pass_min && pass_max:
+            node.value = row.value
+            break
+
+func process_node_option(node):
+    # find row
+    for row in node.row:
+        var row_check = (row.has("check") && row.check == true)
+        
+        if row_check:
             node.value = row.value
             break
 
@@ -298,6 +311,8 @@ func initNodeUIs():
                 node_ui = create_prod_op_node_ui(node)
             TABLE:
                 node_ui = create_table_node_ui(node)
+            OPTION:
+                node_ui = create_option_node_ui(node)
             FUNC:
                 node_ui = create_func_node_ui(node)
             _:
@@ -319,7 +334,7 @@ func initNodeUIs():
         if node_ui == null:
             continue
         # set names
-        if node.type in [VALUE, TABLE]:
+        if node.type in [VALUE, TABLE, OPTION]:
             if node.has("name") && node.name != null:
                 node_ui.set_node_name(node.name)
         # set func_name
@@ -330,7 +345,7 @@ func initNodeUIs():
         if is_constant(node):
             node_ui.set_value(node.value)
         # set row
-        if node.type == TABLE && node.has("row"):
+        if node.type in [TABLE, OPTION] && node.has("row"):
             node_ui.init_row(node.row)
 
     reflect_values()
@@ -510,6 +525,17 @@ func create_table_node():
         "output": []
     }
 
+func create_option_node():
+    return {
+        "id": generate_id(),
+        "type": OPTION,
+        # row is like {"no":1, "check":true, "description":"text", "value":1}
+        "row": [],
+        "value": null,
+        "input": [],
+        "output": []
+    }
+
 func create_func_node():
     return {
         "id": generate_id(),
@@ -578,6 +604,14 @@ func create_table_node_ui(node):
     uiNode.connect("change_table_row", self, "_on_change_table_row")
     return uiNode
 
+func create_option_node_ui(node):
+    var uiNode = OptionNode.instance()
+    uiNode.name = node.id
+    #uiNode.node_type = TABLE
+    uiNode.connect("change_name", self, "_on_change_name")
+    uiNode.connect("change_table_row", self, "_on_change_table_row")
+    return uiNode
+
 func create_func_node_ui(node):
     var uiNode = FuncNode.instance()
     uiNode.name = node.id
@@ -586,6 +620,13 @@ func create_func_node_ui(node):
 
 func _on_change_table_row(id, row):
     print("_on_change_table_row:%s, %s" % [id, row])
+    var node = find_my_node(id)
+    node.row = row
+    calculate_nodes()
+    reflect_values()
+
+func _on_change_option_row(id, row):
+    print("_on_change_option_row:%s, %s" % [id, row])
     var node = find_my_node(id)
     node.row = row
     calculate_nodes()
@@ -636,6 +677,12 @@ func _on_button_prod_op_node_pressed():
 func _on_button_table_node_pressed():
     var node = create_table_node()
     var node_ui = create_table_node_ui(node)
+    graphEdit.add_child(node_ui)
+    nodes.append(node)
+
+func _on_button_option_node_pressed():
+    var node = create_option_node()
+    var node_ui = create_option_node_ui(node)
     graphEdit.add_child(node_ui)
     nodes.append(node)
 
@@ -823,6 +870,8 @@ func _on_edit_index_pressed(idx):
             _on_button_prod_op_node_pressed()
         "Table":
             _on_button_table_node_pressed()
+        "Option":
+            _on_button_option_node_pressed()
         "Function":
             _on_button_func_node_pressed()
         "Arrnage Nodes":
