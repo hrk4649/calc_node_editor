@@ -407,10 +407,15 @@ func arrange_nodes():
                 # add node layer 0
                 add_node_layer(node, layers, 0)
             else:
-                # 
-                var highest_layer = get_highest_layer(node.input, layers)
-                if highest_layer >= 0:
-                    add_node_layer(node, layers, highest_layer + 1)
+                var found_in_layers = 0
+                for input in node.input:
+                    var v = get_highest_layer([input], layers)
+                    if v >= 0:
+                        found_in_layers = found_in_layers + 1
+                if found_in_layers == node.input.size():
+                    var highest_layer = get_highest_layer(node.input, layers)
+                    if highest_layer >= 0:
+                        add_node_layer(node, layers, highest_layer + 1)
     var count2 = count_node_in_layers(layers)
     var origin = Vector2.ZERO
     var grid_size = get_grid_size()
