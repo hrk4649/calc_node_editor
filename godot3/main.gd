@@ -418,21 +418,25 @@ func arrange_nodes():
                         add_node_layer(node, layers, highest_layer + 1)
     var count2 = count_node_in_layers(layers)
     var origin = Vector2.ZERO
-    var grid_size = get_grid_size()
+    var prev_layer_origin = origin
     if count2 == nodes.size():
         for idx1 in range(0, layers.size()):
             var layer = layers[idx1]
+            var grid_size = get_grid_size(layer)
             for idx2 in range(0, layer.size()):
                 var node = layer[idx2]
                 var node_ui = find_node_ui(node.id)
-                var pos_x = grid_size.x * idx1 + (grid_size.x - node_ui.rect_size.x) / 2.0
+                var pos_x = (grid_size.x - node_ui.rect_size.x) / 2.0
                 var pos_y = grid_size.y * idx2 + (grid_size.y - node_ui.rect_size.y) / 2.0
                 var pos = origin + Vector2(pos_x, pos_y)
+                if idx2 == 0:
+                    prev_layer_origin = origin + Vector2(grid_size.x, 0)
                 node_ui.offset = pos
+            origin = prev_layer_origin
 
-func get_grid_size():
+func get_grid_size(layer):
     var max_size = Vector2(0,0)
-    for node in nodes:
+    for node in layer:
         var node_ui = find_node_ui(node.id)
         var ui_rect_size = node_ui.rect_size
         if ui_rect_size.x > max_size.x:
