@@ -282,7 +282,7 @@ func load_json(content):
     nodes = result.result
     initNodeUIs()
     yield(get_tree(), "idle_frame")
-    arrange_nodes()
+    # arrange_nodes()
 
 func initNodeUIs():
     var children = graphEdit.get_children()
@@ -318,6 +318,7 @@ func initNodeUIs():
             _:
                 print("unexpected type:%s" % node.type)
         if node_ui != null:
+            read_size_position(node, node_ui)
             graphEdit.add_child(node_ui)
 
     # create edges
@@ -555,6 +556,39 @@ func create_func_node():
         "output": []
     }
 
+func read_size_position(node, node_ui):
+    if node.has("ui_size"):
+        var vec = node["ui_size"]
+        # ui_size is like {"x":123, "y":456}
+        if vec.has("x") and vec.has("y"):
+            var x = vec["x"]
+            var y = vec["y"]
+            var v = Vector2(x,y)
+            node_ui.rect_size = v
+    if node.has("ui_position"):
+        var vec = node["ui_position"]
+        # ui_position is like {"x":123, "y":456}
+        if vec.has("x") and vec.has("y"):
+            var x = vec["x"]
+            var y = vec["y"]
+            var v = Vector2(x,y)
+            node_ui.offset = v
+
+func write_size_position(node, node_ui):
+    node["ui_size"] = {
+        "x": node_ui.rect_size.x,
+        "y": node_ui.rect_size.y
+       }
+    node["ui_position"] = {
+        "x": node_ui.offset.x,
+        "y": node_ui.offset.y
+       }
+
+func write_node_ui_size_position():
+    for node in nodes:
+        var node_ui = find_node_ui(node.id)
+        if node_ui != null:
+            write_size_position(node, node_ui)
 
 func create_value_node_ui(node):
     var valueNode = ValueNode.instance()
@@ -824,6 +858,7 @@ func _on_file_dialog_file_selected(path):
     print("_on_file_dialog_file_selected:%s" % path)
     match fileDialog.mode:
         FileDialog.MODE_SAVE_FILE:
+            write_node_ui_size_position()
             save_file(path)
         FileDialog.MODE_OPEN_FILE:
             load_file(path)
@@ -834,6 +869,7 @@ func _on_button_arrange_nodes_pressed():
 func _on_button_export_pressed():
     exportDialog.rect_size = self.rect_size * 0.8
     exportDialog.rect_position = self.rect_size * 0.5 - exportDialog.rect_size * 0.5
+    write_node_ui_size_position()
     var content = JSON.print(nodes)
     if content != null:
         textEditExport.text = content
