@@ -595,14 +595,14 @@ func create_sum_op_node_ui(node):
     var opNode = NArrOpNode.instance()
     opNode.name = node.id
     opNode.node_type = SUM
-    opNode.title = "Σ"
+    opNode.title = "SUM"
     return opNode
 
 func create_prod_op_node_ui(node):
     var opNode = NArrOpNode.instance()
     opNode.name = node.id
     opNode.node_type = PROD
-    opNode.title = "Π"
+    opNode.title = "PROD"
     return opNode
 
 func create_table_node_ui(node):
