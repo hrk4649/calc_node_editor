@@ -627,6 +627,11 @@ func create_func_node_ui(node):
     uiNode.connect("change_func", self, "_on_change_func")
     return uiNode
 
+func move_to_center(node_ui):
+    var center = ((graphEdit.rect_size / 2.0 + graphEdit.scroll_offset) 
+        / graphEdit.zoom)
+    node_ui.offset = center
+
 func _on_change_table_row(id, row):
     print("_on_change_table_row:%s, %s" % [id, row])
     var node = find_my_node(id)
@@ -644,60 +649,70 @@ func _on_change_option_row(id, row):
 func _on_button_value_node_pressed():
     var node = create_value_node()
     var node_ui = create_value_node_ui(node)
+    move_to_center(node_ui)
     graphEdit.add_child(node_ui)
     nodes.append(node)
 
 func _on_button_add_op_node_pressed():
     var node = create_add_op_node()
     var node_ui = create_add_op_node_ui(node)
+    move_to_center(node_ui)
     graphEdit.add_child(node_ui)
     nodes.append(node)
 
 func _on_button_sub_op_node_pressed():
     var node = create_sub_op_node()
     var node_ui = create_sub_op_node_ui(node)
+    move_to_center(node_ui)
     graphEdit.add_child(node_ui)
     nodes.append(node)
 
 func _on_button_mul_op_node_pressed():
     var node = create_mul_op_node()
     var node_ui = create_mul_op_node_ui(node)
+    move_to_center(node_ui)
     graphEdit.add_child(node_ui)
     nodes.append(node)
 
 func _on_button_div_op_node_pressed():
     var node = create_div_op_node()
     var node_ui = create_div_op_node_ui(node)
+    move_to_center(node_ui)
     graphEdit.add_child(node_ui)
     nodes.append(node)
 
 func _on_button_sum_op_node_pressed():
     var node = create_sum_op_node()
     var node_ui = create_sum_op_node_ui(node)
+    move_to_center(node_ui)
     graphEdit.add_child(node_ui)
     nodes.append(node)
 
 func _on_button_prod_op_node_pressed():
     var node = create_prod_op_node()
     var node_ui = create_prod_op_node_ui(node)
+    move_to_center(node_ui)
     graphEdit.add_child(node_ui)
     nodes.append(node)
 
 func _on_button_table_node_pressed():
     var node = create_table_node()
     var node_ui = create_table_node_ui(node)
+    move_to_center(node_ui)
     graphEdit.add_child(node_ui)
     nodes.append(node)
 
 func _on_button_option_node_pressed():
     var node = create_option_node()
     var node_ui = create_option_node_ui(node)
+    move_to_center(node_ui)
     graphEdit.add_child(node_ui)
     nodes.append(node)
 
 func _on_button_func_node_pressed():
     var node = create_func_node()
     var node_ui = create_func_node_ui(node)
+    move_to_center(node_ui)
     graphEdit.add_child(node_ui)
     nodes.append(node)
 
