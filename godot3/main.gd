@@ -177,7 +177,7 @@ func process_node_table(node):
         return
     
     # find row
-    for row in node.row:
+    for row in node.rows:
         print("typeof(row.min):%s" % typeof(row.min))
         print("typeof(input_value):%s" % typeof(input_value))
         print("typeof(string):%s" % typeof("abc"))
@@ -190,7 +190,7 @@ func process_node_table(node):
 
 func process_node_option(node):
     # find row
-    for row in node.row:
+    for row in node.rows:
         var row_check = (row.has("check") && row.check == true)
         
         if row_check:
@@ -346,8 +346,8 @@ func initNodeUIs():
         if is_constant(node):
             node_ui.set_value(node.value)
         # set row
-        if node.type in [TABLE, OPTION] && node.has("row"):
-            node_ui.init_row(node.row)
+        if node.type in [TABLE, OPTION] && node.has("rows"):
+            node_ui.init_rows(node.rows)
 
     reflect_values()
 
@@ -529,7 +529,7 @@ func create_table_node():
         "id": generate_id(),
         "type": TABLE,
         # row is like {"no":1, "min":0, "max":100, "value":1}
-        "row": [],
+        "rows": [],
         "value": null,
         "input": [],
         "output": []
@@ -540,7 +540,7 @@ func create_option_node():
         "id": generate_id(),
         "type": OPTION,
         # row is like {"no":1, "check":true, "description":"text", "value":1}
-        "row": [],
+        "rows": [],
         "value": null,
         "input": [],
         "output": []
@@ -644,7 +644,7 @@ func create_table_node_ui(node):
     uiNode.name = node.id
     uiNode.node_type = TABLE
     uiNode.connect("change_name", self, "_on_change_name")
-    uiNode.connect("change_table_row", self, "_on_change_table_row")
+    uiNode.connect("change_table_rows", self, "_on_change_table_rows")
     return uiNode
 
 func create_option_node_ui(node):
@@ -652,7 +652,7 @@ func create_option_node_ui(node):
     uiNode.name = node.id
     #uiNode.node_type = TABLE
     uiNode.connect("change_name", self, "_on_change_name")
-    uiNode.connect("change_table_row", self, "_on_change_table_row")
+    uiNode.connect("change_table_rows", self, "_on_change_table_rows")
     return uiNode
 
 func create_func_node_ui(node):
@@ -666,17 +666,17 @@ func move_to_center(node_ui):
         / graphEdit.zoom)
     node_ui.offset = center
 
-func _on_change_table_row(id, row):
-    print("_on_change_table_row:%s, %s" % [id, row])
+func _on_change_table_rows(id, rows):
+    print("_on_change_table_rows:%s, %s" % [id, rows])
     var node = find_my_node(id)
-    node.row = row
+    node.rows = rows
     calculate_nodes()
     reflect_values()
 
-func _on_change_option_row(id, row):
-    print("_on_change_option_row:%s, %s" % [id, row])
+func _on_change_option_row(id, rows):
+    print("_on_change_option_row:%s, %s" % [id, rows])
     var node = find_my_node(id)
-    node.row = row
+    node.rows = rows
     calculate_nodes()
     reflect_values()
 

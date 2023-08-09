@@ -1,7 +1,7 @@
 extends GraphNode
 
 signal change_name(id, node_name)
-signal change_table_row(id, row)
+signal change_table_rows(id, rows)
 
 var TableNodeLineEdit = preload("res://table_node_line_edit.tscn")
 var TableNodeButton = preload("res://table_node_button.tscn")
@@ -23,17 +23,17 @@ func set_node_type(value):
 func set_node_name(value):
     lineEditName.text = value
 
-func init_row(row):
+func init_rows(rows):
     skip_refresh_row = true
-    for no in range(0, row.size()):
+    for no in range(0, rows.size()):
         add_row()
-    for no in range (0, row.size()):
+    for no in range (0, rows.size()):
         var no_idx = (no + 1) * gridContainer.columns
         var lineEditNo = gridContainer.get_child(no_idx)
         var lineEditMin = gridContainer.get_child(no_idx + 1)
         var lineEditMax = gridContainer.get_child(no_idx + 2)
         var lineEditValue = gridContainer.get_child(no_idx + 3)	
-        var r = row[no]
+        var r = rows[no]
         
         var values = [r.no, r.min, r.max, r.value]
         var uis = [lineEditNo, lineEditMin, lineEditMax, lineEditValue]
@@ -102,7 +102,7 @@ func reset_no_columns():
         lineEditNo.text = str(no)
 
 func refresh_row():
-    var row_ary = []
+    var rows = []
     for no in range (1, get_row_count()):
         var no_idx = no * gridContainer.columns
         # var lineEditNo = gridContainer.get_child(no_idx)
@@ -115,8 +115,8 @@ func refresh_row():
             "max": Utils.text_to_value(lineEditMax.text),
             "value": Utils.text_to_value(lineEditValue.text),
         }
-        row_ary.append(row)
-    emit_signal("change_table_row", self.name, row_ary)
+        rows.append(row)
+    emit_signal("change_table_rows", self.name, rows)
 
 func _on_table_node_line_edit_change_value():
     if !skip_refresh_row:
