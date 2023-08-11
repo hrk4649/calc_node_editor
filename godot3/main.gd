@@ -261,10 +261,18 @@ func reflect_values():
         if !is_constant(node) && child.node_type == VALUE:
             child.set_value(node.value)
 
+func create_data_content():
+    var data = {
+        "version":1,
+        "nodes":nodes
+       }
+    var content = JSON.print(data)
+    return content
+
 func save_file(path):
     var file = File.new()
     file.open(path, File.WRITE)
-    var content = JSON.print(nodes)
+    var content = create_data_content()
     file.store_string(content)
     file.close()
 
@@ -278,8 +286,16 @@ func load_file(path):
     load_json(content)
 
 func load_json(content):
-    var result = JSON.parse(content)
-    nodes = result.result
+    var parseResult = JSON.parse(content)
+    if parseResult.result.has("version"):
+        var version = parseResult.result["version"]
+        # TODO show message
+        if version != 1:
+            print("unexpected format version:%s" % version)
+    if parseResult.result.has("nodes"):
+        nodes = parseResult.result["nodes"]
+    else:
+        nodes = parseResult.result
     initNodeUIs()
     yield(get_tree(), "idle_frame")
     # arrange_nodes()
@@ -870,7 +886,7 @@ func _on_button_export_pressed():
     exportDialog.rect_size = self.rect_size * 0.8
     exportDialog.rect_position = self.rect_size * 0.5 - exportDialog.rect_size * 0.5
     write_node_ui_size_position()
-    var content = JSON.print(nodes)
+    var content = create_data_content()
     if content != null:
         textEditExport.text = content
     else:
