@@ -9,7 +9,8 @@ The goal of the app is to visualize a complex number calculation like tax calcul
 
 You can try the app on the web.
 
-- <a href="https://hrk4649.github.io/calc_node_editor/godot3/index.html" target="_blank">Calc Node Editor</a>
+- [Calc Node Editor](https://hrk4649.github.io/calc_node_editor/godot3/index.html)
+  - You can use Export and Import instead of Save and Load.
 
 ## Functions of the app
 
@@ -48,9 +49,15 @@ Note: Godot 4's GraphEditor and GraphNode are planed to change in feature.
 
 ## Examples
 
-### addition of two numbers
+Data files can be found in test_data directory.
+
+### Addition of two numbers
 
 ![Addition of two numbers](./images/example_add.png)
+
+```json
+{"version":1,"nodes":[{"id":"4b7ec070-59e2-4c2a-945a-1c0443af604f","type":"value","name":"A","value":2,"input":[],"output":["36b8f107-ec90-418c-aab1-6275a1ec0631"],"ui_size":{"x":200,"y":102},"ui_position":{"x":20,"y":-20}},{"id":"abf0a903-342f-46a1-a9af-3147834bda75","type":"value","name":"B","value":3,"input":[],"output":["36b8f107-ec90-418c-aab1-6275a1ec0631"],"ui_size":{"x":200,"y":102},"ui_position":{"x":20,"y":160}},{"id":"36b8f107-ec90-418c-aab1-6275a1ec0631","type":"add","value":5,"input":["4b7ec070-59e2-4c2a-945a-1c0443af604f","abf0a903-342f-46a1-a9af-3147834bda75"],"output":["d355409b-b05e-48b2-88b8-0e9aea65edc3"],"ui_size":{"x":70,"y":79},"ui_position":{"x":320,"y":60}},{"id":"d355409b-b05e-48b2-88b8-0e9aea65edc3","type":"value","name":"RESULT","value":5,"input":["36b8f107-ec90-418c-aab1-6275a1ec0631"],"output":[],"ui_size":{"x":200,"y":102},"ui_position":{"x":480,"y":60}}]}
+```
 
 ### Area of triangle
 
