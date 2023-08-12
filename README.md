@@ -5,6 +5,12 @@
 This app is an attempt to visualize number calculations with node graph.
 The goal of the app is to visualize a complex number calculation like tax calculation.
 
+## Trying the app
+
+You can try the app on the web.
+
+- [Calc Node Editor](https://hrk4649.github.io/calc_node_editor/godot3/index.html)
+
 ## Functions of the app
 
 - Value node
