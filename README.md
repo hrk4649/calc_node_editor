@@ -9,7 +9,7 @@ The goal of the app is to visualize a complex number calculation like tax calcul
 
 You can try the app on the web.
 
-- [Calc Node Editor](https://hrk4649.github.io/calc_node_editor/godot3/index.html)
+- <a href="https://hrk4649.github.io/calc_node_editor/godot3/index.html" target="_blank">Calc Node Editor</a>
 
 ## Functions of the app
 
