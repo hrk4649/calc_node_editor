@@ -1,9 +1,71 @@
-# Calc Node Editor
+# Calc Node Editor (Beta)
 
 ## What is this ?
 
-This app is an attempt to show how number calculation is constructed.
-Tax calculation is one of examples.
+This app visualizes number calculation with node graph.
+The goal of the app is to visualize complex number calculation like tax calculation.
 
-- Withholding Tax (源泉徴収税)
-  - https://www.saisoncard.co.jp/credictionary/bussinesscard/article088.html#:~:text=%E6%94%AF%E6%89%95%E5%A0%B1%E9%85%AC%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8B%E6%BA%90%E6%B3%89%E5%BE%B4%E5%8F%8E%E7%A8%8E%E9%A1%8D%E3%81%AE%E8%A8%88%E7%AE%97%E6%96%B9%E6%B3%95&text=100%E4%B8%87%E5%86%86%E3%82%92%E8%B6%85%E3%81%88,%E5%BE%B4%E5%8F%8E%E7%A8%8E%E9%A1%8D%E3%81%AB%E3%81%AA%E3%82%8A%E3%81%BE%E3%81%99%E3%80%82
+## Functions of the app
+
+- Value node
+  - Value node has a name and its value.
+  - Value node is used as a constant if the value node has no any input edges.
+- Basic operator node
+  - addition (A + B)
+  - subtraction (A - B)
+  - multiply (A * B)
+  - division (A / B)
+- Summation and Product operator node
+  - Summation (Σ)
+  - Product (Π)
+- Table node
+  - Table node maps the input value into the categories with value.
+- Option node
+  - You can choose one of the options that converts to the specific value.
+- Function node
+  - Following functions are available: round(), floor(), ceil(), sin()
+
+## Variations of the app
+
+There are two variations of the app.
+Development is mainly done on Godot 3.
+
+Note: Godot 4's GraphEditor and GraphNode are planed to change in feature.
+
+- Godot 3(3.5.2)
+- Godot 4(4.1)
+
+## Limitation
+
+- Number of value calculations is limited to the number of node to prevent the app from infinite loop.
+
+## Examples
+
+### addition of two numbers
+
+![Addition of two numbers](./images/example_add.png)
+
+### Area of triangle
+
+![Area of triangle](./images/example_area_triangle.png)
+
+### BMI 
+
+https://en.wikipedia.org/wiki/Body_mass_index
+
+![BMI](./images/example_bmi.png)
+
+### Withholding Tax (源泉徴収税)
+
+- https://www.saisoncard.co.jp/credictionary/bussinesscard/article088.html (in Japanese)
+
+![BMI](./images/example_withholding_tax.png)
+
+
+## License
+
+MIT
+
+## Copyright
+
+(c) 2023 flat-e
