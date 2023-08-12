@@ -2,8 +2,8 @@
 
 ## What is this ?
 
-This app visualizes number calculation with node graph.
-The goal of the app is to visualize complex number calculation like tax calculation.
+This app is an attempt to visualize number calculations with node graph.
+The goal of the app is to visualize a complex number calculation like tax calculation.
 
 ## Functions of the app
 
@@ -15,6 +15,7 @@ The goal of the app is to visualize complex number calculation like tax calculat
   - subtraction (A - B)
   - multiply (A * B)
   - division (A / B)
+    - Result of zero division will be null. 
 - Summation and Product operator node
   - Summation (Σ)
   - Product (Π)
@@ -64,7 +65,7 @@ Note: Godot 4's GraphEditor and GraphNode are planed to change in feature.
 
 ## License
 
-MIT
+MIT License
 
 ## Copyright
 
