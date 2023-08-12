@@ -51,7 +51,7 @@ Note: Godot 4's GraphEditor and GraphNode are planed to change in feature.
 
 ### BMI 
 
-https://en.wikipedia.org/wiki/Body_mass_index
+- https://en.wikipedia.org/wiki/Body_mass_index
 
 ![BMI](./images/example_bmi.png)
 
