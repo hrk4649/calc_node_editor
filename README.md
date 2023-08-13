@@ -10,7 +10,7 @@ The goal of the app is to visualize a complex number calculation like tax calcul
 You can try the app on the web.
 
 - [Calc Node Editor](https://hrk4649.github.io/calc_node_editor/godot3/index.html)
-  - You can use Export and Import instead of Save and Load.
+  - The app on the web uses a special file system that is not one your device uses. Using Export and Import instead of Save and Load may be better.
 
 ## Functions of the app
 
