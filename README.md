@@ -38,7 +38,7 @@ You can try the app on the web.
 There are two variations of the app.
 Development is mainly done on Godot 3.
 
-Note: Godot 4's GraphEditor and GraphNode are planed to change in feature.
+Note: Godot 4's GraphEditor and GraphNode are planed to be changed in future release.
 
 - Godot 3(3.5.2)
 - Godot 4(4.1)
