@@ -22,3 +22,5 @@ const TABLE = "table"
 const OPTION = "option"
 # Functions
 const FUNC = "func"
+# Functions takes 2 input
+const FUNC2 = "func2"

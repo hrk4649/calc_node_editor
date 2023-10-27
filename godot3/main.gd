@@ -6,6 +6,7 @@ var NArrOpNode = preload("res://n_ary_op_node.tscn")
 var TableNode = preload("res://table_node.tscn")
 var OptionNode = preload("res://option_node.tscn")
 var FuncNode = preload("res://func_node.tscn")
+var Func2Node = preload("res://func2_node.tscn")
 
 var AboutResource = preload("res://about_resource.tres")
 
@@ -19,6 +20,7 @@ const PROD = Constraints.PROD
 const TABLE = Constraints.TABLE
 const OPTION = Constraints.OPTION
 const FUNC = Constraints.FUNC
+const FUNC2 = Constraints.FUNC2
 
 onready var graphEdit = $VBoxContainer/HBoxContainer/GraphEdit
 onready var fileDialog = $FileDialog
@@ -34,6 +36,8 @@ onready var popupMenuEdit = $VBoxContainer/HBoxContainer2/MenuButtonEdit
 onready var popupMenuHelp = $VBoxContainer/HBoxContainer2/MenuButtonHelp
 
 var nodes = []
+
+var func2 = Func2.new()
 
 func _ready():
     initMenuButton()
@@ -132,6 +136,8 @@ func process_node(node):
             process_node_option(node)
         FUNC:
             process_node_func(node)
+        FUNC2:
+            process_node_func2(node)
         _:
             print("unsupported type:%s" % node.type)
 
@@ -161,6 +167,31 @@ func process_node_func(node):
         _:
             print("process_node_func:unsupported func name:%s" % node.func_name)
 
+func process_node_func2(node):
+    if node.input.size() != 2:
+        print("process_node_func2:need 2 input")
+        return
+    var input_values = get_input_values(node)
+    if input_values.size() != 2:
+        print("process_node_func2:no input value")
+        return
+
+    for input_value in input_values:
+        if !(typeof(input_value) in [TYPE_INT, TYPE_REAL]):
+            print("process_node_func:no int or float value:%s" % input_value)
+            return
+
+    var input_value_a = input_values[0]	
+    var input_value_b = input_values[1]	
+
+
+
+    match node.func_name:
+        "round":
+            var result = func2.func2_round(input_value_a, input_value_b)
+            node.value = result
+        _:
+            print("process_node_func2:unsupported func2 name:%s" % node.func_name)
 
 func process_node_table(node):
     if node.input.size() != 1:
@@ -331,6 +362,8 @@ func initNodeUIs():
                 node_ui = create_option_node_ui(node)
             FUNC:
                 node_ui = create_func_node_ui(node)
+            FUNC2:
+                node_ui = create_func2_node_ui(node)
             _:
                 print("unexpected type:%s" % node.type)
         if node_ui != null:
@@ -344,6 +377,8 @@ func initNodeUIs():
             var to_port = 0
             if node.type in [ADD,SUB,MUL,DIV]:
                 to_port = input_idx
+            elif node.type == FUNC2:
+                to_port = input_idx
             graphEdit.connect_node(input_id, 0, node.id, to_port)
 
     for node in nodes:
@@ -355,7 +390,7 @@ func initNodeUIs():
             if node.has("name") && node.name != null:
                 node_ui.set_node_name(node.name)
         # set func_name
-        if node.type == FUNC:
+        if node.type in [FUNC, FUNC2] :
             if node.has("func_name") && node.func_name != null:
                 node_ui.set_func_name(node.func_name)
         # set value
@@ -572,6 +607,16 @@ func create_func_node():
         "output": []
     }
 
+func create_func2_node():
+    return {
+        "id": generate_id(),
+        "type": FUNC2,
+        "func_name": null,
+        "value": null,
+        "input": [],
+        "output": []
+    }
+
 func read_size_position(node, node_ui):
     if node.has("ui_size"):
         var vec = node["ui_size"]
@@ -677,6 +722,12 @@ func create_func_node_ui(node):
     uiNode.connect("change_func", self, "_on_change_func")
     return uiNode
 
+func create_func2_node_ui(node):
+    var uiNode = Func2Node.instance()
+    uiNode.name = node.id
+    uiNode.connect("change_func2", self, "_on_change_func2")
+    return uiNode
+
 func move_to_center(node_ui):
     var center = ((graphEdit.rect_size / 2.0 + graphEdit.scroll_offset) 
         / graphEdit.zoom)
@@ -766,6 +817,13 @@ func _on_button_func_node_pressed():
     graphEdit.add_child(node_ui)
     nodes.append(node)
 
+func _on_button_func2_node_pressed():
+    var node = create_func2_node()
+    var node_ui = create_func2_node_ui(node)
+    move_to_center(node_ui)
+    graphEdit.add_child(node_ui)
+    nodes.append(node)
+
 func _on_change_name(id, node_name):
     print("_on_change_name:%s, %s" % [id, node_name])
     var node = find_my_node(id)
@@ -783,6 +841,13 @@ func _on_change_value(id, value):
 
 func _on_change_func(id, func_name):
     print("_on_change_func:%s, %s" % [id, func_name])
+    var node = find_my_node(id)
+    node.func_name = func_name
+    calculate_nodes()
+    reflect_values()
+
+func _on_change_func2(id, func_name):
+    print("_on_change_func2:%s, %s" % [id, func_name])
     var node = find_my_node(id)
     node.func_name = func_name
     calculate_nodes()
@@ -962,3 +1027,6 @@ func _on_help_index_pressed(idx):
             _on_button_about_pressed()
         _:
             print("unexpected menu item:%s" % text)
+
+
+
