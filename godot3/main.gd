@@ -1014,6 +1014,8 @@ func _on_edit_index_pressed(idx):
             _on_button_option_node_pressed()
         "Function":
             _on_button_func_node_pressed()
+        "Function2":
+            _on_button_func2_node_pressed()
         "Arrnage Nodes":
             _on_button_arrange_nodes_pressed()
         _:
