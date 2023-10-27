@@ -84,46 +84,33 @@ func remove_node(to_remove):
     nodes.erase(to_remove)
 
 func get_input_values(node):
-    var input_nodes = []
-    for id in node.input:
-        var n = find_my_node(id)
-        if n != null:
-            input_nodes.append(n)
-
     var input_values = []
-    for input_node in input_nodes:
-        if input_node.has(VALUE):
-            var value = input_node[VALUE]
-            if value != null:
-                input_values.append(value)
+    for id in node.input:
+        var value = null
+        var n = find_my_node(id)
+        if n != null and n.has(VALUE):
+            value = n[VALUE]
+        input_values.append(value)
 
     var result = input_values
+    print("get_input_values:id: %s value: %s" % [node.id, input_values])
     return result
 
 func can_process_node(node):
-    if node.input.size() == 0:
-        return true
-    else:
-        var input_values = get_input_values(node)
-        if input_values.size() == node.input.size():
-            return true
-    return false
+    return (node.input.size() == 0 || is_input_available(node))
 
 func is_input_available(node):
     var input_values = get_input_values(node)
-    return node.input.size() > 0 && input_values.size() == node.input.size()
+    var count_values = 0
+    for input_value in input_values:
+        if input_value != null:
+            count_values += 1
+    return node.input.size() > 0 && count_values == node.input.size()
 
 func process_node(node):
     match node.type:
         VALUE:
-            # set node.value
-            if node.input.size() == 0:
-                # do nothing
-                pass
-            elif is_input_available(node) && node.input.size() == 1:
-                var input_values = get_input_values(node)
-                if input_values.size() == 1:
-                    node.value = input_values[0]
+            process_node_value(node)
         ADD,SUB,MUL,DIV:
             process_node_2op(node)
         SUM:
@@ -140,6 +127,17 @@ func process_node(node):
             process_node_func2(node)
         _:
             print("unsupported type:%s" % node.type)
+
+func process_node_value(node):
+    # set node.value
+    if node.input.size() == 0:
+        # do nothing
+        pass
+    elif is_input_available(node) && node.input.size() == 1:
+        var input_values = get_input_values(node)
+        if input_values.size() == 1:
+            node.value = input_values[0]
+    print("process_node_value:%s" % node)
 
 func process_node_func(node):
     if node.input.size() != 1:
@@ -184,12 +182,11 @@ func process_node_func2(node):
     var input_value_a = input_values[0]	
     var input_value_b = input_values[1]	
 
-
-
     match node.func_name:
         "round":
             var result = func2.func2_round(input_value_a, input_value_b)
             node.value = result
+            print("process_node_func2:value: %s" % node.value)
         _:
             print("process_node_func2:unsupported func2 name:%s" % node.func_name)
 
@@ -864,6 +861,7 @@ func _on_button_delete_pressed():
                 break
 
 func _on_graph_edit_connection_request(from_node, from_port, to_node, to_port):
+    #print("_on_graph_edit_connection_request:from:%s %s to:%s %s" % [from_node, from_port, to_node, to_port])
     var from = find_my_node(from_node)
     var to = find_my_node(to_node)
     if from == null:
@@ -895,6 +893,7 @@ func _on_graph_edit_connection_request(from_node, from_port, to_node, to_port):
     reflect_values()
 
 func _on_graph_edit_disconnection_request(from_node, from_port, to_node, to_port):
+    #print("_on_graph_edit_disconnection_request:from:%s %s to:%s %s" % [from_node, from_port, to_node, to_port])
     var from = find_my_node(from_node)
     var to = find_my_node(to_node)
     if from == null:
